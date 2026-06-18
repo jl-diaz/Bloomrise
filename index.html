@@ -236,7 +236,7 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--magenta);
-      background: rgba(138,63,102,0.08);
+      background: rgb(138, 63, 102);
       padding: 0.4rem 1rem;
       border-radius: 100px;
       margin-bottom: 1.25rem;
@@ -262,6 +262,7 @@
       color: rgba(58,32,48,0.75);
       max-width: 440px;
       margin-bottom: 2.25rem;
+      font-weight: 500;
     }
 
     .btn-primary {
@@ -370,22 +371,30 @@
 
     .section-header-pill {
       display: flex;
+      justify-content: center;
       align-items: center;
       gap: 0.6rem;
-      background: linear-gradient(135deg, var(--rosa-emp), var(--rosa-medio));
+      background: linear-gradient(135deg, var(--rosa-claro), var(--rosa-emp));
       border-radius: 100px;
-      padding: 0.7rem 1.6rem;
+      padding: 0.6rem 1.6rem;
     }
 
     .section-header-pill span {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
+      width: 40px; height: 40px;
+      color: var(--magenta);
+    }
+
+    .section-header-pill img {
+      width: 40px; height: 40px;
+      filter: drop-shadow(0 0 2px rgba(138,63,102,0.4));
     }
 
     .section-header-pill h2 {
       font-family: 'Inter', sans-serif;
       font-size: 1.1rem;
       font-weight: 600;
-      color: var(--vino);
+      color: var(--magenta);
     }
 
     .section-header-pill h2 em {
@@ -864,6 +873,10 @@
       .nav-links { display: none; }
       .hamburger { display: flex; }
 
+      .hero {
+      min-height: 60svh;
+      }
+
       .hero-inner {
         grid-template-columns: 1fr;
         padding: 3rem 1.25rem 2rem;
@@ -875,7 +888,7 @@
 
       /* En móvil el overlay cubre casi todo para legibilidad */
       .hero-bg-img + div {
-        background: linear-gradient(to bottom, rgba(245,221,232,0.96) 60%, rgba(245,221,232,0.75) 100%) !important;
+        background: linear-gradient(to right, rgba(245, 221, 232, 0.829) 40%, rgba(245, 221, 232, 0.295) 100%) !important;
       }
 
       .info-grid {
@@ -945,7 +958,7 @@
   <!-- Imagen de fondo: mujer sentada en cama, estilo suave/editorial -->
   <div class="hero-bg-img" style="
     position:absolute; inset:0;
-    background-image: url('https://nuevamentepsicologos.com/wp-content/uploads/2020/08/Problemas-psicol%C3%B3gicos-derivados-del-confinamiento.png');
+    background-image: url('./media/indexBack.png');
     background-size: cover;
     background-position: center right;
     z-index: 0;
@@ -953,7 +966,7 @@
   <!-- Overlay gradiente sobre la imagen -->
   <div style="
     position:absolute; inset:0;
-    background: linear-gradient(to right, rgba(245,221,232,0.97) 38%, rgba(245,221,232,0.7) 65%, rgba(245,221,232,0.1) 100%);
+    background: linear-gradient(to right, rgba(245, 221, 232, 0.829) 40%, rgba(245, 221, 232, 0.295) 100%);
     z-index: 1;
   "></div>
 
@@ -983,7 +996,7 @@
   <div class="section-inner">
     <div class="section-header">
       <div class="section-header-pill">
-        <span>✦</span>
+        <span><img src="./media/indexStars.png" alt="Icono de Recursos"></span>
         <h2><em>Recursos</em> para tu bienestar emocional</h2>
       </div>
     </div>
