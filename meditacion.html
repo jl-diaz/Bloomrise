@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bloomrise – Meditación y Bienestar Emocional</title>
+
+  <link rel="icon" href="./media/logo.png" type="image/x-icon" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Lenis -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+  <!-- Main Style -->
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+
+<!-- Progress bar de scroll -->
+<div id="progress-bar"></div>
+
+<!-- ═══════════════════ NAVBAR ═══════════════════ -->
+<nav class="navbar" id="navbar">
+  <a href="./index.html" class="nav-logo">Bloomrise</a>
+
+  <ul class="nav-links">
+    <li><a href="./index.html#inicio">Inicio</a></li>
+    <li><a href="./informativa.html">Información</a></li>
+    <li><a href="./meditacion.html" class="active">Meditacion</a></li>
+    <li><a href="./test.html">Test de Edimburgo</a></li>
+    <li><a href="./index.html#blog">Blog</a></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- Menú móvil -->
+<div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Menú móvil">
+  <a href="./index.html#inicio" class="mobile-link"><span class="menu-dot"></span>Inicio</a>
+  <a href="./informativa.html" class="mobile-link"><span class="menu-dot"></span>Información</a>
+  <a href="./meditacion.html" class="mobile-link active"><span class="menu-dot"></span>Meditacion</a>
+  <a href="./test.html" class="mobile-link"><span class="menu-dot"></span>Test de Edimburgo</a>
+  <a href="./index.html#blog" class="mobile-link"><span class="menu-dot"></span>Blog</a>
+</div>
+
+<!-- ═══════════════════ SMOOTH WRAPPER ═══════════════════ -->
+<div id="smooth-wrapper">
+<div id="smooth-content">
+
+  <!-- ═══════════════════ HERO MEDITACIÓN ═══════════════════ -->
+  <section class="hero" id="hero-meditacion" style="min-height: auto; padding: 7rem 2rem 4rem;">
+    <div class="hero-inner" style="grid-template-columns: 1.25fr 0.75fr;">
+      <div class="hero-text fade-up">
+        <div class="page-pill">Sección: Meditación</div>
+        <h1 class="hero-title" style="font-size: clamp(2.2rem, 5vw, 3.4rem); margin-bottom: 1.5rem;">
+          Meditación
+        </h1>
+        <p class="hero-subtitle" style="max-width: 550px;">
+          La meditación es un método importante para aliviar los síntomas de la depresión postparto y manejar el estrés, la ansiedad y los pensamientos negativos.
+        </p>
+      </div>
+      <div class="hero-image-wrap fade-up" style="animation-delay: 0.1s;">
+        <!-- Imagen generada: Flor de loto -->
+        <img src="./media/meditacionLotus.png" alt="Ilustración de una hermosa flor de loto en color rosa sobre el agua" style="max-width: 100%; height: auto; border-radius: 28px; box-shadow: 0 12px 36px rgba(91,39,66,0.06);" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ DETALLES Y BENEFICIOS ═══════════════════ -->
+  <section class="recursos" style="background: #fdf5f8; padding: 4rem 2rem 5rem;">
+    <div class="section-inner" style="max-width: 1000px;">
+      
+      <!-- Card 1: ¿Por qué es importante? -->
+      <div class="info-card fade-up">
+        <h2 class="info-card-title">
+          <span style="font-size: 1.6rem; vertical-align: middle;">🧘‍♀️</span>
+          ¿Por qué es importante?
+        </h2>
+        <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 2.5rem; align-items: center;">
+          <div>
+            <p style="font-size: 1.05rem; line-height: 1.8; color: rgba(58,32,48,0.8); margin-bottom: 1.25rem;">
+              Dedicarse unos minutos al día es fundamental. Encontrar ejercicios y momentos de relajación te ayudará a reducir los niveles de cortisol (la hormona del estrés), conectar con tus emociones actuales y encontrar mayor tranquilidad, ya sea a solas o junto a tu bebé.
+            </p>
+            <p style="font-size: 1.05rem; line-height: 1.8; color: rgba(58,32,48,0.8); font-weight: 500;">
+              La meditación ayuda a calmar la mente de forma activa, reducir la tensión emocional acumulada en el día a día, cultivar el bienestar general y reconectarte contigo misma durante esta hermosa pero desafiante etapa. Hazlo a tu propio ritmo.
+            </p>
+          </div>
+          <div style="text-align: center;">
+            <!-- Imagen generada: Mujer meditando -->
+            <img src="./media/meditacionWoman.png" alt="Ilustración de una mujer meditando tranquilamente" style="max-width: 100%; border-radius: 20px; box-shadow: 0 8px 24px rgba(91,39,66,0.05);" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: ¿En qué se centra? -->
+      <div class="info-card fade-up">
+        <h2 class="info-card-title">
+          <span style="font-size: 1.6rem; vertical-align: middle;">✨</span>
+          ¿En qué se centra?
+        </h2>
+        
+        <div class="grid-4col" style="grid-template-columns: repeat(3, 1fr);">
+          <!-- Foco 1 -->
+          <div class="factor-card">
+            <div class="factor-icon" style="background: rgba(230,184,203,0.3);">🧘</div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--vino); margin-bottom: 0.5rem;">Yoga y respiración</h3>
+            <p style="font-size: 0.8rem; line-height: 1.5; color: rgba(58,32,48,0.65);">
+              Ejercicios de yoga suave y respiración guiada diseñados para relajar el cuerpo físico y calmar la agitación de la mente.
+            </p>
+          </div>
+          <!-- Foco 2 -->
+          <div class="factor-card">
+            <div class="factor-icon" style="background: rgba(230,184,203,0.3);">👶</div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--vino); margin-bottom: 0.5rem;">Meditación con tu bebé</h3>
+            <p style="font-size: 0.8rem; line-height: 1.5; color: rgba(58,32,48,0.65);">
+              Sesiones especiales para practicar sola o en contacto piel con piel con tu bebé, fortaleciendo el vínculo afectivo y la conexión emocional.
+            </p>
+          </div>
+          <!-- Foco 3 -->
+          <div class="factor-card">
+            <div class="factor-icon" style="background: rgba(230,184,203,0.3);">💞</div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--vino); margin-bottom: 0.5rem;">Relación materno-infantil</h3>
+            <p style="font-size: 0.8rem; line-height: 1.5; color: rgba(58,32,48,0.65);">
+              Fomenta la presencia, la calma compartida y la comprensión mutua a través de la respiración rítmica y la atención plena.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Disponible en medios digitales -->
+      <div class="info-card fade-up" style="padding: 2rem 2.5rem; margin-bottom: 3.5rem;">
+        <div style="display: flex; gap: 1.5rem; align-items: center;">
+          <div style="width: 60px; height: 60px; border-radius: 50%; background: #FFEBEF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #FF0000; font-size: 1.8rem; box-shadow: 0 4px 10px rgba(255,0,0,0.08);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.507a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.507 9.388.507 9.388.507s7.517 0 9.388-.507a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </div>
+          <div>
+            <h4 style="font-weight: 700; color: var(--vino); font-size: 1.05rem; margin-bottom: 0.25rem;">Disponible en medios digitales</h4>
+            <p style="font-size: 0.88rem; line-height: 1.5; color: rgba(58,32,48,0.7);">
+              Todos los ejercicios y meditaciones guiadas se encuentran disponibles en plataformas digitales, principalmente en YouTube, para que puedas reproducirlos cuando lo necesites, cómodamente desde casa.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════ CAROUSEL DE VIDEOS RECOMENDADOS ═══════════════════ -->
+      <div class="fade-up" style="margin-bottom: 4rem;">
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--vino); text-align: center; margin-bottom: 0.5rem;">
+          Videos de meditación recomendados
+        </h2>
+        <p style="font-size: 0.9rem; color: rgba(58, 32, 48, 0.55); text-align: center; margin-bottom: 2.5rem;">
+          Desliza o haz clic en las flechas para explorar. Al hacer clic en un video, se abrirá en la app o web de YouTube.
+        </p>
+
+        <!-- CAROUSEL WRAPPER -->
+        <div class="med-carousel-wrap">
+          <!-- Botones -->
+          <button class="med-car-btn" id="med-car-prev" aria-label="Video anterior">‹</button>
+          <button class="med-car-btn" id="med-car-next" aria-label="Siguiente video">›</button>
+
+          <div class="med-carousel-viewport" id="med-viewport">
+            <div class="med-carousel-track" id="med-track">
+              
+              <!-- Card 1 -->
+              <a href="https://www.youtube.com/watch?v=5G837Zt2vHw" target="_blank" class="med-card" data-video-id="5G837Zt2vHw">
+                <div class="med-card-img-wrap">
+                  <img src="https://img.youtube.com/vi/5G837Zt2vHw/mqdefault.jpg" alt="Miniatura de Respira y suelta" class="med-card-img" />
+                  <div class="med-card-play">
+                    <div class="med-play-btn">▶</div>
+                  </div>
+                  <span class="med-card-duration">12:45</span>
+                </div>
+                <div class="med-card-body">
+                  <h3 class="med-card-title">Respira y suelta</h3>
+                  <p class="med-card-desc">Ejercicios de respiración guiada ideales para reducir el estrés acumulado y rebajar la ansiedad diaria.</p>
+                  <div class="med-card-footer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.507a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.507 9.388.507 9.388.507s7.517 0 9.388-.507a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    YouTube
+                  </div>
+                </div>
+              </a>
+
+              <!-- Card 2 -->
+              <a href="https://www.youtube.com/watch?v=mDmgQ6C2pmo" target="_blank" class="med-card" data-video-id="mDmgQ6C2pmo">
+                <div class="med-card-img-wrap">
+                  <img src="https://img.youtube.com/vi/mDmgQ6C2pmo/mqdefault.jpg" alt="Miniatura de Conexión mamá y bebé" class="med-card-img" />
+                  <div class="med-card-play">
+                    <div class="med-play-btn">▶</div>
+                  </div>
+                  <span class="med-card-duration">15:30</span>
+                </div>
+                <div class="med-card-body">
+                  <h3 class="med-card-title">Conexión mamá y bebé</h3>
+                  <p class="med-card-desc">Meditación guiada enfocada en fortalecer el vínculo afectivo y la calma compartida entre ambos.</p>
+                  <div class="med-card-footer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.507a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.507 9.388.507 9.388.507s7.517 0 9.388-.507a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    YouTube
+                  </div>
+                </div>
+              </a>
+
+              <!-- Card 3 -->
+              <a href="https://www.youtube.com/watch?v=z0vA5x6c-9c" target="_blank" class="med-card" data-video-id="z0vA5x6c-9c">
+                <div class="med-card-img-wrap">
+                  <img src="https://img.youtube.com/vi/z0vA5x6c-9c/mqdefault.jpg" alt="Miniatura de Calma tu mente" class="med-card-img" />
+                  <div class="med-card-play">
+                    <div class="med-play-btn">▶</div>
+                  </div>
+                  <span class="med-card-duration">10:22</span>
+                </div>
+                <div class="med-card-body">
+                  <h3 class="med-card-title">Calma tu mente</h3>
+                  <p class="med-card-desc">Meditación de atención plena para liberar tensiones mentales y regular pensamientos negativos.</p>
+                  <div class="med-card-footer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.507a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.507 9.388.507 9.388.507s7.517 0 9.388-.507a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    YouTube
+                  </div>
+                </div>
+              </a>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Indicador de puntos (dots) -->
+        <div class="med-car-dots" id="med-dots"></div>
+      </div>
+
+      <!-- Banner final: Tómate este momento para ti -->
+      <div class="phrase-banner fade-up" style="display: grid; grid-template-columns: auto 1fr; text-align: left; gap: 2rem;">
+        <!-- Icono vectorizado de manos sosteniendo corazón -->
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: #FFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 14px rgba(91,39,66,0.06);">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#E6B8CB" opacity="0.6"/>
+            <path d="M12 18.5c-4 0-7-2-7-5s3-3 7-3 7 1.5 7 4.5-3 3.5-7 3.5z" stroke="#B65F88" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div>
+          <h4 style="font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--vino); margin-bottom: 0.5rem;">Tómate este momento para ti.</h4>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">
+            La meditación es un acto de amor propio que puede transformar tu bienestar y el de tu bebé de forma profunda.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Bloomrise</div>
+      <p class="footer-tagline">Acompañándote con información, apoyo y comprensión en cada etapa.</p>
+      <div class="footer-links">
+        <a href="./index.html#inicio">Inicio</a>
+        <a href="./informativa.html">Información</a>
+        <a href="./meditacion.html">Meditacion</a>
+        <a href="./test.html">Test de Edimburgo</a>
+        <a href="./index.html#blog">Blog</a>
+      </div>
+      <div class="footer-divider"></div>
+      <p class="footer-copy">© 2026 Bloomrise · Este sitio tiene fines informativos y no reemplaza la atención médica profesional.</p>
+    </div>
+  </footer>
+
+</div><!-- #smooth-content -->
+</div><!-- #smooth-wrapper -->
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script>
+  /* ──── HAMBURGER MENU ──── */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+
+  function toggleMenu(open) {
+    hamburger.classList.toggle('open', open);
+    mobileMenu.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open);
+  }
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.contains('open');
+    toggleMenu(!isOpen);
+  });
+
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => toggleMenu(false));
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+      toggleMenu(false);
+    }
+  });
+
+  /* ─── LENIS SMOOTH SCROLL ──── */
+  const lenis = new Lenis({
+    duration: 1.35,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothTouch: false,
+  });
+
+  /* ─── GSAP REGISTER ──── */
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Sincronizar Lenis con ScrollTrigger
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  /* ─── Progress bar de scroll ─── */
+  lenis.on('scroll', ({ scroll, limit }) => {
+    document.getElementById('progress-bar').style.width = (scroll / limit * 100) + '%';
+  });
+
+  /* ─── NAVBAR SCROLL STYLE ──── */
+  const navbar = document.getElementById('navbar');
+  lenis.on('scroll', ({ scroll }) => {
+    navbar.classList.toggle('scrolled', scroll > 30);
+  });
+
+  /* ──── GSAP ANIMACIONES DE ENTRADA ──── */
+  gsap.utils.toArray('.fade-up').forEach((el, i) => {
+    gsap.fromTo(el,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        delay: i * 0.08,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+        }
+      }
+    );
+  });
+
+  /* ══════════════════════════════════════════════
+     CAROUSEL DE MEDITACIÓN — robusto, dinámico e independiente
+     ══════════════════════════════════════════════ */
+  (function initMedCarousel() {
+    const track = document.getElementById('med-track');
+    const viewport = document.getElementById('med-viewport');
+    const dotsWrap = document.getElementById('med-dots');
+    const btnPrev = document.getElementById('med-car-prev');
+    const btnNext = document.getElementById('med-car-next');
+    const cards = Array.from(track.querySelectorAll('.med-card'));
+    
+    if (cards.length === 0) return;
+
+    const GAP = 24; // 1.5rem (debe coincidir con la separación en CSS)
+    let idx = 0; // índice de la tarjeta visible a la izquierda
+    let anim = false;
+    let drag = { active: false, startX: 0, moved: 0 };
+
+    /* — Cuántas tarjetas se pueden ver al mismo tiempo — */
+    function visibleCount() {
+      const w = viewport.clientWidth;
+      if (w >= 900) return 3;
+      if (w >= 600) return 2;
+      return 1;
+    }
+
+    /* — Ancho completo de una tarjeta + espacio de separación — */
+    function cardStep() {
+      return cards[0].getBoundingClientRect().width + GAP;
+    }
+
+    /* — Límite máximo de scroll — */
+    function maxIdx() {
+      return Math.max(0, cards.length - visibleCount());
+    }
+
+    /* — Aplicar el transform por JS para mover el track — */
+    function setOffset(animated) {
+      const offset = idx * cardStep();
+      track.style.transition = animated ? 'transform .5s cubic-bezier(.22,.61,.36,1)' : 'none';
+      track.style.transform = `translateX(-${offset}px)`;
+    }
+
+    /* — Crear los puntos indicadores dinámicos — */
+    function buildDots() {
+      dotsWrap.innerHTML = '';
+      const total = maxIdx() + 1;
+      for (let i = 0; i < total; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'med-car-dot' + (i === idx ? ' active' : '');
+        btn.setAttribute('aria-label', `Mostrar diapositiva ${i + 1}`);
+        btn.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(btn);
+      }
+    }
+
+    /* — Actualizar el indicador activo — */
+    function updateDots() {
+      dotsWrap.querySelectorAll('.med-car-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === idx);
+      });
+    }
+
+    /* — Moverse a una posición del carrusel — */
+    function goTo(i, animated = true) {
+      if (anim) return;
+      idx = Math.max(0, Math.min(i, maxIdx()));
+      setOffset(animated);
+      updateDots();
+      if (animated) {
+        anim = true;
+        setTimeout(() => { anim = false; }, 520);
+      }
+    }
+
+    // Eventos de botones
+    btnNext.addEventListener('click', () => {
+      goTo(idx >= maxIdx() ? 0 : idx + 1);
+    });
+
+    btnPrev.addEventListener('click', () => {
+      goTo(idx <= 0 ? maxIdx() : idx - 1);
+    });
+
+    /* — Drag táctil en móviles — */
+    viewport.addEventListener('touchstart', e => {
+      drag = { active: true, startX: e.touches[0].clientX, moved: 0 };
+    }, { passive: true });
+
+    viewport.addEventListener('touchmove', e => {
+      if (!drag.active) return;
+      drag.moved = drag.startX - e.touches[0].clientX;
+      const offset = idx * cardStep() + drag.moved;
+      track.style.transition = 'none';
+      track.style.transform = `translateX(-${offset}px)`;
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', () => {
+      if (!drag.active) return;
+      drag.active = false;
+      if (drag.moved > 50) goTo(Math.min(idx + 1, maxIdx()));
+      else if (drag.moved < -50) goTo(Math.max(idx - 1, 0));
+      else goTo(idx); // reajustar
+    });
+
+    /* — Drag con ratón (escritorio) — */
+    viewport.addEventListener('mousedown', e => {
+      drag = { active: true, startX: e.clientX, moved: 0 };
+      track.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', e => {
+      if (!drag.active) return;
+      drag.moved = drag.startX - e.clientX;
+      const offset = idx * cardStep() + drag.moved;
+      track.style.transition = 'none';
+      track.style.transform = `translateX(-${offset}px)`;
+    });
+
+    window.addEventListener('mouseup', e => {
+      if (!drag.active) return;
+      drag.active = false;
+      track.style.cursor = '';
+      if (drag.moved > 50) goTo(Math.min(idx + 1, maxIdx()));
+      else if (drag.moved < -50) goTo(Math.max(idx - 1, 0));
+      else goTo(idx);
+    });
+
+    /* — Recalcular en redimensiones — */
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (idx > maxIdx()) idx = maxIdx();
+        buildDots();
+        setOffset(false);
+      }, 120);
+    });
+
+    // Clic en tarjetas: ignorar si ha sido arrastrado, sino redirigir
+    cards.forEach(card => {
+      card.addEventListener('click', e => {
+        if (Math.abs(drag.moved) > 5) {
+          e.preventDefault(); // cancela la redirección si es un drag largo
+        }
+      });
+    });
+
+    // Inicializar
+    buildDots();
+    setOffset(false);
+  })();
+</script>
+
+</body>
+</html>

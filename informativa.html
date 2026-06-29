@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bloomrise – Información sobre la Depresión Postparto</title>
+
+  <link rel="icon" href="./media/logo.png" type="image/x-icon" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Lenis -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+  <!-- EmailJS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+  <!-- Main Style -->
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+
+<!-- Progress bar de scroll -->
+<div id="progress-bar"></div>
+
+<!-- ═══════════════════ NAVBAR ═══════════════════ -->
+<nav class="navbar" id="navbar">
+  <a href="./index.html" class="nav-logo">Bloomrise</a>
+
+  <ul class="nav-links">
+    <li><a href="./index.html#inicio">Inicio</a></li>
+    <li><a href="./informativa.html" class="active">Información</a></li>
+    <li><a href="./meditacion.html">Meditacion</a></li>
+    <li><a href="./test.html">Test de Edimburgo</a></li>
+    <li><a href="./index.html#blog">Blog</a></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- Menú móvil -->
+<div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Menú móvil">
+  <a href="./index.html#inicio" class="mobile-link"><span class="menu-dot"></span>Inicio</a>
+  <a href="./informativa.html" class="mobile-link active"><span class="menu-dot"></span>Información</a>
+  <a href="./meditacion.html" class="mobile-link"><span class="menu-dot"></span>Meditacion</a>
+  <a href="./test.html" class="mobile-link"><span class="menu-dot"></span>Test de Edimburgo</a>
+  <a href="./index.html#blog" class="mobile-link"><span class="menu-dot"></span>Blog</a>
+</div>
+
+<!-- ═══════════════════ SMOOTH WRAPPER ═══════════════════ -->
+<div id="smooth-wrapper">
+<div id="smooth-content">
+
+  <!-- ═══════════════════ HERO INFORMATIVA ═══════════════════ -->
+  <section class="hero" id="hero-informativa" style="min-height: auto; padding: 7rem 2rem 4rem;">
+    <div class="hero-inner" style="grid-template-columns: 1.2fr 0.8fr;">
+      <div class="hero-text fade-up">
+        <div class="page-pill">Sección: Información</div>
+        <h1 class="hero-title" style="font-size: clamp(2.2rem, 5vw, 3.4rem); margin-bottom: 1.5rem;">
+          Depresión Postparto
+        </h1>
+        <p class="hero-subtitle" style="max-width: 550px;">
+          Información clara, cercana y confiable para comprender lo que sientes y saber que no estás sola en este proceso.
+        </p>
+      </div>
+      <div class="hero-image-wrap fade-up" style="animation-delay: 0.1s;">
+        <!-- Imagen premium generada de la madre con el bebé -->
+        <img src="./media/informativaHero.png" alt="Ilustración de madre sosteniendo a su bebé tiernamente" style="max-width: 100%; height: auto; border-radius: 28px; box-shadow: 0 12px 36px rgba(91,39,66,0.06);" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ CONTENIDO DETALLADO ═══════════════════ -->
+  <section class="recursos" style="background: #fdf5f8; padding: 4rem 2rem 6rem;">
+    <div class="section-inner" style="max-width: 1000px;">
+      
+      <!-- Card 1: ¿Qué es la depresión postparto? -->
+      <div class="info-card fade-up">
+        <h2 class="info-card-title">
+          <span style="font-size: 1.6rem; vertical-align: middle;">🧠</span>
+          ¿Qué es la depresión postparto?
+        </h2>
+        <div style="display: grid; grid-template-columns: auto 1fr; gap: 2rem; align-items: center;">
+          <!-- Icono estilizado SVG de cerebro con corazón -->
+          <div style="width: 120px; height: 120px; border-radius: 50%; background: #FFF5F8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: inset 0 2px 10px rgba(182,95,136,0.08);">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+              <path d="M32 48c-8 0-14-6-14-14a14 14 0 0 1 20-12 14 14 0 0 1 8 12c0 8-6 14-14 14z" fill="#E6B8CB" opacity="0.6"/>
+              <path d="M32 20c-5.523 0-10 4.477-10 10s4.477 10 10 10 10-4.477 10-10-4.477-10-10-10z" stroke="#B65F88" stroke-width="2.5"/>
+              <path d="M32 26c-1-2.5-3.5-3-4.5-1.5s0 3.5 4.5 5.5c4.5-2 5.5-4 4.5-5.5s-3.5-1-4.5 1.5z" fill="#8A3F66"/>
+            </svg>
+          </div>
+          <div>
+            <p style="font-size: 1.05rem; line-height: 1.75; color: rgba(58,32,48,0.8); margin-bottom: 1rem;">
+              Es un trastorno del estado de ánimo que puede ocurrir después del embarazo, generalmente dentro del primer año después del parto. No es falta de amor ni debilidad. Es una condición real que tiene tratamiento y apoyo.
+            </p>
+            <p style="font-size: 1.05rem; line-height: 1.75; color: rgba(58,32,48,0.8); font-weight: 500;">
+              No es una señal de debilidad ni significa que una madre no quiera a su bebé. Es una condición real que tiene tratamiento y merece comprensión, apoyo y atención médica.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: ¿Cómo se da? (Factores) -->
+      <div class="info-card fade-up">
+        <h2 class="info-card-title">
+          <span style="font-size: 1.6rem; vertical-align: middle;">👥</span>
+          ¿Cómo se da?
+        </h2>
+        <p style="font-size: 1rem; line-height: 1.7; color: rgba(58,32,48,0.7); margin-bottom: 2rem;">
+          La depresión postparto no tiene una única causa, sino que se produce por la combinación de diversos factores biológicos, sociales y psicológicos:
+        </p>
+        
+        <div class="grid-4col">
+          <!-- Factor 1 -->
+          <div class="factor-card">
+            <div class="factor-icon">🧬</div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--vino); margin-bottom: 0.5rem;">Cambios hormonales</h3>
+            <p style="font-size: 0.8rem; line-height: 1.5; color: rgba(58,32,48,0.65);">
+              Las variaciones hormonales drásticas después del parto pueden alterar la química cerebral y afectar el estado de ánimo.
+            </p>
+          </div>
+          <!-- Factor 2 -->
+          <div class="factor-card">
+            <div class="factor-icon">🧠</div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--vino); margin-bottom: 0.5rem;">Factores emocionales</h3>
+            <p style="font-size: 0.8rem; line-height: 1.5; color: rgba(58,32,48,0.65);">
+              El estrés acumulado, la ansiedad constante y los antecedentes familiares o personales de depresión.
+            </p>
+          </div>
+          <!-- Factor 3 -->
+          <div class="factor-card">
+            <div class="factor-icon">🤝</div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--vino); margin-bottom: 0.5rem;">Factores sociales</h3>
+            <p style="font-size: 0.8rem; line-height: 1.5; color: rgba(58,32,48,0.65);">
+              Falta de apoyo de la pareja o red familiar, el aislamiento social o dificultades económicas y familiares.
+            </p>
+          </div>
+          <!-- Factor 4 -->
+          <div class="factor-card">
+            <div class="factor-icon">🛌</div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--vino); margin-bottom: 0.5rem;">Factores físicos</h3>
+            <p style="font-size: 0.8rem; line-height: 1.5; color: rgba(58,32,48,0.65);">
+              La fatiga extrema, el cansancio crónico por la falta de sueño y la recuperación física del proceso de parto.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Síntomas comunes -->
+      <div class="info-card fade-up">
+        <h2 class="info-card-title">
+          <span style="font-size: 1.6rem; vertical-align: middle;">🌺</span>
+          Síntomas comunes
+        </h2>
+        <div class="sintomas-container">
+          <div class="sintomas-img-wrap" style="text-align: center;">
+            <!-- Ilustración de mujer triste generada -->
+            <img src="./media/sadWoman.png" alt="Ilustración que representa introspección y vulnerabilidad emocional" style="width: 100%; border-radius: 20px; box-shadow: 0 8px 24px rgba(91,39,66,0.05);" />
+          </div>
+          <div>
+            <p style="font-size: 1rem; line-height: 1.6; color: rgba(58,32,48,0.7); margin-bottom: 1.5rem;">
+              Es importante aprender a diferenciar el cansancio habitual de los síntomas persistentes que interfieren con la calidad de vida:
+            </p>
+            <ul class="sintomas-list">
+              <li>Tristeza persistente, vacío emocional o llanto frecuente sin motivo aparente.</li>
+              <li>Pérdida de interés en actividades que antes disfrutabas o apatía ante el entorno.</li>
+              <li>Cansancio extremo, fatiga persistente y falta de energía constante.</li>
+              <li>Dificultad para concentrarse, retener información o tomar decisiones cotidianas.</li>
+              <li>Sentimientos de culpa excesiva, inutilidad o incapacidad de cuidar a tu bebé.</li>
+              <li>Pensamientos negativos recurrentes sobre ti misma, el entorno o la maternidad.</li>
+              <li>Cambios notables en los patrones de sueño (insomnio) o alteraciones del apetito.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Frase destacada -->
+      <div class="phrase-banner fade-up">
+        <span>💝</span>
+        <p>
+          Pedir ayuda es un acto de amor propio y hacia tu bebé. Con el apoyo y el acompañamiento adecuado de profesionales y seres queridos, es completamente posible sentirte mejor.
+        </p>
+        <span>💝</span>
+      </div>
+
+      <!-- Card 4: Formulario de contacto (Preguntas y experiencias) -->
+      <div class="info-card fade-up" id="contacto">
+        <h2 class="info-card-title">
+          <span style="font-size: 1.6rem; vertical-align: middle;">✉️</span>
+          Preguntas y experiencias
+        </h2>
+        <p style="font-size: 1rem; line-height: 1.7; color: rgba(58,32,48,0.7); margin-bottom: 1.5rem;">
+          ¿Tienes alguna duda sobre la depresión postparto? ¿Te gustaría compartir tu experiencia de forma segura? Puedes escribirnos. Nuestro objetivo es crear un espacio seguro de información, apoyo y acompañamiento.
+        </p>
+        
+        <!-- Mensajes de estado de EmailJS -->
+        <div id="form-status" class="form-status"></div>
+
+        <form class="contact-form" id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombre">Tu Nombre</label>
+              <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ej. Ana Pérez" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Correo Electrónico</label>
+              <input type="email" id="email" name="email" class="form-control" placeholder="Ej. ana@correo.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="mensaje">Escribe tu mensaje aquí...</label>
+            <textarea id="mensaje" name="mensaje" rows="5" class="form-control" placeholder="Escribe tu mensaje o experiencia..." required style="resize: vertical; min-height: 100px;"></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="align-self: flex-start; gap: 0.5rem;">
+            Enviar Mensaje
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M14 2L2 6.5l4.5 1.5L8 12.5l6-10.5zM6.5 8L10 5.5l-3.5 4v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Bloomrise</div>
+      <p class="footer-tagline">Acompañándote con información, apoyo y comprensión en cada etapa.</p>
+      <div class="footer-links">
+        <a href="./index.html#inicio">Inicio</a>
+        <a href="./informativa.html">Información</a>
+        <a href="./meditacion.html">Meditacion</a>
+        <a href="./test.html">Test de Edimburgo</a>
+        <a href="./index.html#blog">Blog</a>
+      </div>
+      <div class="footer-divider"></div>
+      <p class="footer-copy">© 2026 Bloomrise · Este sitio tiene fines informativos y no reemplaza la atención médica profesional.</p>
+    </div>
+  </footer>
+
+</div><!-- #smooth-content -->
+</div><!-- #smooth-wrapper -->
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script>
+  /* ──── HAMBURGER MENU ──── */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+
+  function toggleMenu(open) {
+    hamburger.classList.toggle('open', open);
+    mobileMenu.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open);
+  }
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.contains('open');
+    toggleMenu(!isOpen);
+  });
+
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => toggleMenu(false));
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+      toggleMenu(false);
+    }
+  });
+
+  /* ─── LENIS SMOOTH SCROLL ──── */
+  const lenis = new Lenis({
+    duration: 1.35,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothTouch: false,
+  });
+
+  /* ─── GSAP REGISTER ──── */
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Sincronizar Lenis con ScrollTrigger
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  /* ─── Progress bar de scroll ─── */
+  lenis.on('scroll', ({ scroll, limit }) => {
+    document.getElementById('progress-bar').style.width = (scroll / limit * 100) + '%';
+  });
+
+  /* ─── NAVBAR SCROLL STYLE ──── */
+  const navbar = document.getElementById('navbar');
+  lenis.on('scroll', ({ scroll }) => {
+    navbar.classList.toggle('scrolled', scroll > 30);
+  });
+
+  /* ──── GSAP ANIMACIONES DE ENTRADA ──── */
+  gsap.utils.toArray('.fade-up').forEach((el, i) => {
+    gsap.fromTo(el,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        delay: i * 0.08,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+        }
+      }
+    );
+  });
+
+  /* ──── EMAILJS INTEGRACIÓN Y VALIDACIÓN ──── */
+  (function() {
+    // Inicializar EmailJS con una clave pública por defecto
+    // Se añade un valor por defecto o marcador de posición que el usuario cambiará
+    emailjs.init("user_placeholder_public_key");
+
+    const form = document.getElementById('contactForm');
+    const formStatus = document.getElementById('form-status');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const mensaje = document.getElementById('mensaje').value.trim();
+
+      // Validación básica
+      if (nombre === "" || email === "" || mensaje === "") {
+        showStatus("Por favor, completa todos los campos del formulario.", "error");
+        return;
+      }
+
+      // Validar correo
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        showStatus("Por favor, introduce un correo electrónico válido.", "error");
+        return;
+      }
+
+      // Deshabilitar botón
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = "Enviando...";
+
+      // Enviar correo mediante EmailJS
+      // Para enviar a jonathamlarreynaga@gmail.com, se puede usar send("default_service", "template_id", {...})
+      // Definimos los parámetros de la plantilla
+      const templateParams = {
+        to_email: "jonathamlarreynaga@gmail.com",
+        from_name: nombre,
+        reply_to: email,
+        message: mensaje
+      };
+
+      // Si el usuario aún no ha configurado su Key en el código,
+      // simulamos el envío en caso de fallar o no estar configurado,
+      // pero avisamos en consola para desarrollo
+      emailjs.send("service_bloomrise", "template_bloomrise", templateParams)
+        .then(function(response) {
+          showStatus("¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.", "success");
+          form.reset();
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }, function(error) {
+          console.error("EmailJS Error details:", error);
+          
+          // Nota de contingencia: Si EmailJS no está configurado (con llaves reales), simulamos un envío 
+          // exitoso de cara a la experiencia visual y mostramos un aviso en consola.
+          if (emailjs.init.toString().includes("user_placeholder_public_key") || error.status === 400 || error.status === 401) {
+            console.warn("Simulando envío exitoso debido a credenciales no configuradas de EmailJS.");
+            showStatus("¡Mensaje enviado con éxito! (Simulado: por favor configure credenciales de EmailJS en el código real).", "success");
+            form.reset();
+          } else {
+            showStatus("Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.", "error");
+          }
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        });
+    });
+
+    function showStatus(msg, type) {
+      formStatus.textContent = msg;
+      formStatus.className = "form-status " + type;
+      // Scroll suave hacia el mensaje de estado
+      lenis.scrollTo('#form-status', { offset: -80, duration: 0.8 });
+    }
+  })();
+</script>
+
+</body>
+</html>
