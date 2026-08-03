@@ -3,1204 +3,548 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bloomrise – Test de Edimburgo (EPDS)</title>
-
+  <title>Bloomrise – Test de Edimburgo</title>
   <link rel="icon" href="./media/logo.png" type="image/x-icon" />
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <!-- GSAP + ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
-  <!-- Lenis -->
   <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-
-  <!-- Main Style -->
   <link rel="stylesheet" href="./css/style.css" />
-
   <style>
-    /* ─── Estilos específicos de la página del test ─── */
-
-    /* Landing informativa del test */
-    .test-stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin: 2.5rem 0;
-    }
-
-    @media (max-width: 576px) {
-      .test-stats-row { grid-template-columns: 1fr; }
-    }
-
-    .test-stat-card {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 14px;
-      padding: 1.5rem;
-      text-align: center;
-      backdrop-filter: blur(8px);
-    }
-
-    .test-stat-card .stat-icon {
-      font-size: 1.8rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .test-stat-card .stat-value {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.25rem;
-    }
-
-    .test-stat-card .stat-desc {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.4;
-    }
-
-    /* Sección de interpretación */
-    .interpret-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    @media (max-width: 700px) {
-      .interpret-grid { grid-template-columns: 1fr; }
-    }
-
-    .interpret-card {
-      border-radius: 14px;
-      padding: 1.25rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .interpret-card.green {
-      background: rgba(72, 187, 120, 0.12);
-      border: 1px solid rgba(72, 187, 120, 0.3);
-    }
-
-    .interpret-card.yellow {
-      background: rgba(236, 201, 75, 0.12);
-      border: 1px solid rgba(236, 201, 75, 0.3);
-    }
-
-    .interpret-card.pink {
-      background: rgba(182, 95, 136, 0.12);
-      border: 1px solid rgba(182, 95, 136, 0.3);
-    }
-
-    .interpret-range {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 0.35rem;
-      padding: 0.2rem 0.65rem;
-      border-radius: 100px;
-      display: inline-block;
-    }
-
-    .interpret-card.green .interpret-range { background: rgba(72,187,120,0.2); color: #276749; }
-    .interpret-card.yellow .interpret-range { background: rgba(236,201,75,0.2); color: #7b6a1e; }
-    .interpret-card.pink .interpret-range { background: rgba(182,95,136,0.2); color: var(--magenta); }
-
-    .interpret-card h4 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--vino);
-      margin-bottom: 0.35rem;
-    }
-
-    .interpret-card p {
-      font-size: 0.8rem;
-      color: rgba(58,32,48,0.7);
-      line-height: 1.45;
-    }
-
-    /* Mood tracker */
-    .mood-tracker {
-      background: #fdf5f8;
-      border-radius: 16px;
-      padding: 2rem;
-      border: 1px solid rgba(230,184,203,0.35);
-      margin-top: 3rem;
-    }
-
-    .mood-emojis {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.25rem;
-      margin: 1.25rem 0 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .mood-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      background: white;
-      font-size: 1.4rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-      box-shadow: 0 2px 6px rgba(91,39,66,0.06);
-    }
-
-    .mood-btn:hover { transform: scale(1.15); }
-    .mood-btn.selected {
-      border-color: var(--rosa-medio);
-      box-shadow: 0 0 0 4px rgba(217,142,175,0.25);
-      transform: scale(1.2);
-    }
-
-    .mood-scale {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.7rem;
-      color: rgba(58,32,48,0.45);
-      margin-top: 0.25rem;
-    }
-
-    /* ─── WIZARD DEL TEST ─── */
-    #test-wizard-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      background: rgba(91, 39, 66, 0.55);
-      backdrop-filter: blur(6px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-
-    #test-wizard-overlay.active {
-      display: flex;
-    }
-
-    .wizard-modal {
-      background: #fffbfd;
+    .page-header { padding: 100px 2rem 4rem; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
+    .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--blanco); border: 1px solid var(--rosa-emp); border-radius: 100px; padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--vino); font-weight: 500; margin-bottom: 1.5rem; }
+    .page-eyebrow::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--rosa-malva); }
+    .page-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); color: var(--rosa-malva); line-height: 1.1; margin-bottom: 1rem; }
+    .page-subtitle { font-size: 1.1rem; color: rgba(58,32,48,0.8); line-height: 1.6; }
+    .page-hero-img { width: 100%; height: 350px; background: radial-gradient(circle at center, var(--rosa-claro) 0%, transparent 70%); border-radius: 20px; display: flex; align-items: center; justify-content: center; position: relative; }
+    
+    .test-container { max-width: 1000px; margin: 0 auto; padding: 0 2rem 4rem; display: flex; flex-direction: column; gap: 2rem; }
+    .info-card {
+      background: #ffffff00;
       border-radius: 24px;
-      width: 100%;
-      max-width: 620px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 24px 64px rgba(91, 39, 66, 0.2);
-      position: relative;
-      animation: modalIn 0.4s cubic-bezier(0.22,0.61,0.36,1) both;
+      border: 0px solid var(--rosa-emp);
+      box-shadow: 0 0 0 0 rgba(0,0,0,0.05);
     }
-
-    @keyframes modalIn {
-      from { opacity: 0; transform: translateY(30px) scale(0.96); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
+    .info-card:hover {
+      background: #ffffff00;
+      border-radius: 24px;
+      border: 0px solid var(--rosa-emp);
+      box-shadow: 0 0 0 0 rgba(0,0,0,0.05);
     }
+    .info-card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .info-card-icon { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; }
+    .info-card-title { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 4vw, 1.8rem); color: var(--vino); margin-top: 5px; line-height: 1.2; }
+    
+    .test-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; text-align: center; }
+    .feature-icon { width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 0.8rem; display: flex; align-items: center; justify-content: center; color: white; }
+    .feature-title { font-weight: 600; color: var(--vino); margin-bottom: 0.4rem; font-size: 0.95rem; }
+    .feature-desc { font-size: 0.8rem; color: rgba(58,32,48,0.7); }
 
-    .wizard-header {
-      background: linear-gradient(135deg, var(--vino), var(--magenta));
-      padding: 1.75rem 2rem 1.25rem;
-      border-radius: 24px 24px 0 0;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+    .interpret-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .interpret-list { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+    .interpret-list li { font-size: 0.9rem; color: rgba(58,32,48,0.8); }
+    .interpret-list li strong { color: var(--vino); }
+    .interpret-disclaimer { background: #faf4f7; padding: 1.5rem; border-radius: 16px; font-size: 0.85rem; color: rgba(58,32,48,0.7); display: flex; align-items: center; text-align: center; }
+
+    .start-banner { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, var(--rosa-claro), #fff); border: 1px solid var(--rosa-emp); border-radius: 24px; padding: 1.5rem 2rem; }
+    .start-banner h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--vino); margin-bottom: 0.4rem; }
+    .start-banner p { font-size: 0.9rem; color: rgba(58,32,48,0.7); }
+    .btn-start { background: var(--rosa-malva); color: white; border: none; padding: 0.8rem 2rem; border-radius: 100px; font-weight: 600; cursor: pointer; transition: opacity 0.3s; font-size: 1rem; }
+    .btn-start:hover { opacity: 0.8; }
+
+    /* Test Logic Styles */
+    .interactive-test { display: none; margin-top: 2rem; background: #fff; border-radius: 24px; border: 1px solid var(--rosa-emp); padding: 2rem; }
+    .test-question { margin-bottom: 2rem; border-bottom: 1px solid var(--rosa-claro); padding-bottom: 2rem; }
+    .test-question h4 { font-size: 1.1rem; color: var(--vino); margin-bottom: 1rem; font-weight: 600; }
+    .test-options { display: flex; flex-direction: column; gap: 0.5rem; }
+    .test-option { display: flex; align-items: center; gap: 0.8rem; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: background 0.2s; }
+    .test-option:hover { background: #faf4f7; }
+    .test-option input { width: 18px; height: 18px; accent-color: var(--rosa-malva); }
+    .test-citation { font-size: 0.75rem; color: rgba(58,32,48,0.5); text-align: center; margin-bottom: 1.5rem; }
+
+    /* Result UI */
+    .result-ui { display: none; text-align: center; margin-top: 2rem; padding: 3rem 2rem; background: #fff; border-radius: 24px; border: 1px solid var(--rosa-emp); }
+    .score-card { margin: 0 auto 2rem; padding: 2rem; border: 2px solid var(--rosa-emp); border-radius: 16px; display: inline-block; background: #fff; box-shadow: 0 8px 24px rgba(230,184,203,0.3); min-width: 250px; }
+    .score-card h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #1a1a1a; margin-bottom: 0.5rem; }
+    .score-number { font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 700; color: #cc4a85; line-height: 1; margin: 0; }
+    .score-desc { font-size: 1.1rem; color: rgba(58,32,48,0.8); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
+    /* Custom Alert Modal */
+    .custom-modal-overlay {
+      position: fixed; inset: 0; background: rgba(58, 32, 48, 0.4);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10000; opacity: 0; pointer-events: none; transition: 0.3s;
+      backdrop-filter: blur(4px);
     }
-
-    .wizard-header h2 {
-      font-family: 'Playfair Display', serif;
-      color: #fff;
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
+    .custom-modal-overlay.active { opacity: 1; pointer-events: all; }
+    .custom-modal {
+      background: white; border-radius: 24px; padding: 2.5rem 2rem; max-width: 400px; width: 90%;
+      text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.1); border: 1px solid var(--rosa-claro);
+      transform: translateY(20px) scale(0.95); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    /* Barra de progreso del wizard */
-    .wizard-progress-bar {
-      height: 6px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 100px;
-      overflow: hidden;
+    .custom-modal-overlay.active .custom-modal { transform: translateY(0) scale(1); }
+    .custom-modal-icon {
+      width: 60px; height: 60px; background: #faf4f7; color: var(--rosa-malva);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; font-weight: bold; margin: 0 auto 1rem; border: 2px solid var(--rosa-emp);
     }
+    .custom-modal-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--vino); margin-bottom: 0.5rem; }
+    .custom-modal-text { font-size: 0.95rem; color: rgba(58,32,48,0.8); margin-bottom: 1.5rem; line-height: 1.5;}
+    .custom-modal-btn { background: var(--rosa-malva); color: white; border: none; padding: 0.8rem 2.5rem; border-radius: 100px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+    .custom-modal-btn:hover { opacity: 0.8; transform: translateY(-2px); }
 
-    .wizard-progress-fill {
-      height: 100%;
-      background: rgba(255,255,255,0.9);
-      border-radius: 100px;
-      transition: width 0.5s cubic-bezier(0.22,0.61,0.36,1);
-    }
+    .journal-section { background: linear-gradient(135deg, var(--rosa-claro), #fff); border-radius: 24px; padding: 3rem 2rem; display: flex; flex-direction: column; gap: 2rem; }
+    .journal-header { display: flex; align-items: center; gap: 2rem; }
+    .journal-text h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--vino); margin-bottom: 0.5rem; }
+    .journal-text p { font-size: 0.95rem; color: rgba(58,32,48,0.8); line-height: 1.6; margin-bottom: 1rem; }
+    .journal-img { flex-shrink: 0; width: 120px; height: 120px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(230,184,203,0.4); }
+    
+    .benefits-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; text-align: center; }
+    .benefit-card { background: white; padding: 1.5rem 1rem; border-radius: 16px; box-shadow: 0 4px 12px rgba(230,184,203,0.2); }
+    .benefit-icon { width: 48px; height: 48px; background: var(--rosa-claro); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; color: var(--rosa-malva); }
+    .benefit-title { font-weight: 600; font-size: 0.9rem; color: var(--vino); margin-bottom: 0.5rem; }
+    .benefit-desc { font-size: 0.75rem; color: rgba(58,32,48,0.7); }
 
-    .wizard-step-label {
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.65);
-      margin-top: 0.5rem;
-      text-align: right;
-    }
+    .mood-tracker { background: white; padding: 2rem; border-radius: 20px; text-align: center; }
+    .mood-tracker h3 { font-family: 'Playfair Display', serif; color: var(--vino); margin-bottom: 1.5rem; }
+    .emojis { display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; }
+    .emoji-item { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; font-size: 2rem; cursor: pointer; opacity: 0.6; transition: opacity 0.3s, transform 0.3s; }
+    .emoji-item:hover { opacity: 1; transform: scale(1.1); }
+    .emoji-num { font-size: 0.8rem; color: var(--vino); font-weight: 600; font-family: 'Poppins', sans-serif; }
 
-    .wizard-body {
-      padding: 2rem;
-    }
+    .bottom-banner { background: #faf4f7; border-radius: 24px; padding: 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .bottom-banner h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--vino); margin-bottom: 0.3rem; }
+    .bottom-banner p { font-size: 0.85rem; color: rgba(58,32,48,0.7); max-width: 500px; }
+    .btn-outline { border: 2px solid var(--rosa-malva); background: transparent; color: var(--rosa-malva); padding: 0.8rem 1.5rem; border-radius: 100px; font-weight: 600; cursor: pointer; text-decoration: none; }
 
-    .wizard-question-text {
-      font-size: 1.12rem;
-      font-weight: 600;
-      color: var(--vino);
-      line-height: 1.5;
-      margin-bottom: 1.75rem;
-    }
-
-    .wizard-question-sub {
-      font-size: 0.82rem;
-      color: rgba(58,32,48,0.55);
-      margin-bottom: 1.5rem;
-      font-style: italic;
-    }
-
-    .wizard-options {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .wizard-option {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem 1.25rem;
-      border-radius: 12px;
-      border: 2px solid rgba(230,184,203,0.4);
-      background: #fff;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s, transform 0.15s;
-      font-size: 0.95rem;
-      color: var(--texto);
-      font-weight: 500;
-      text-align: left;
-      width: 100%;
-    }
-
-    .wizard-option:hover {
-      border-color: var(--rosa-medio);
-      background: rgba(245,221,232,0.2);
-      transform: translateX(4px);
-    }
-
-    .wizard-option.selected {
-      border-color: var(--magenta);
-      background: rgba(245,221,232,0.4);
-    }
-
-    .wizard-option-dot {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid rgba(182,95,136,0.4);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.2s, background 0.2s;
-    }
-
-    .wizard-option.selected .wizard-option-dot {
-      border-color: var(--magenta);
-      background: var(--magenta);
-    }
-
-    .wizard-option.selected .wizard-option-dot::after {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: white;
-    }
-
-    .wizard-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.5rem 2rem;
-      border-top: 1px solid rgba(230,184,203,0.2);
-      gap: 1rem;
-    }
-
-    .wizard-btn-back {
-      background: none;
-      border: 2px solid rgba(230,184,203,0.6);
-      color: var(--vino);
-      padding: 0.7rem 1.5rem;
-      border-radius: 100px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .wizard-btn-back:hover {
-      border-color: var(--rosa-medio);
-      background: rgba(245,221,232,0.2);
-    }
-
-    .wizard-btn-next {
-      background: linear-gradient(135deg, var(--rosa-medio), var(--magenta));
-      color: white;
-      border: none;
-      padding: 0.7rem 1.75rem;
-      border-radius: 100px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
-      box-shadow: 0 6px 20px rgba(182,95,136,0.3);
-      font-family: 'Poppins', sans-serif;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .wizard-btn-next:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(182,95,136,0.4);
-    }
-
-    .wizard-btn-next:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .wizard-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      border: none;
-      color: white;
-      font-size: 1.1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-      z-index: 11;
-    }
-
-    .wizard-close:hover { background: rgba(255,255,255,0.25); }
-
-    /* ─── Pantalla de resultado ─── */
-    .result-screen {
-      display: none;
-      padding: 2.5rem 2rem;
-      text-align: center;
-    }
-
-    .result-screen.active { display: block; }
-
-    .result-score-circle {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.75rem;
-      border: 4px solid transparent;
-      box-shadow: 0 8px 28px rgba(91,39,66,0.12);
-    }
-
-    .result-score-circle.low {
-      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-      border-color: rgba(72,187,120,0.4);
-    }
-
-    .result-score-circle.moderate {
-      background: linear-gradient(135deg, #fefce8, #fef9c3);
-      border-color: rgba(234,179,8,0.4);
-    }
-
-    .result-score-circle.high {
-      background: linear-gradient(135deg, #fdf5f8, var(--rosa-claro));
-      border-color: rgba(182,95,136,0.4);
-    }
-
-    .result-score-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .result-score-circle.low .result-score-num { color: #166534; }
-    .result-score-circle.moderate .result-score-num { color: #854d0e; }
-    .result-score-circle.high .result-score-num { color: var(--magenta); }
-
-    .result-score-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: rgba(58,32,48,0.5);
-      margin-top: 0.2rem;
-    }
-
-    .result-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--vino);
-      margin-bottom: 0.75rem;
-    }
-
-    .result-description {
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: rgba(58,32,48,0.75);
-      max-width: 450px;
-      margin: 0 auto 1.75rem;
-    }
-
-    .result-recommendation {
-      background: rgba(245,221,232,0.4);
-      border: 1px solid rgba(230,184,203,0.4);
-      border-radius: 12px;
-      padding: 1.25rem;
-      font-size: 0.88rem;
-      line-height: 1.6;
-      color: var(--vino);
-      margin-bottom: 2rem;
-      font-weight: 500;
-    }
-
-    .result-actions {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-restart {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: none;
-      border: 2px solid var(--rosa-medio);
-      color: var(--magenta);
-      padding: 0.75rem 1.75rem;
-      border-radius: 100px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .btn-restart:hover {
-      background: var(--rosa-claro);
-    }
-
-    /* ─── Aviso de validación ─── */
-    .wizard-validation-msg {
-      font-size: 0.82rem;
-      color: var(--magenta);
-      background: rgba(245,221,232,0.5);
-      border-left: 3px solid var(--rosa-medio);
-      padding: 0.6rem 0.9rem;
-      border-radius: 0 6px 6px 0;
-      margin-top: 1rem;
-      display: none;
-    }
-
-    .wizard-validation-msg.visible { display: block; }
-
-    /* Anotación EPDS */
-    .epds-note {
-      font-size: 0.72rem;
-      color: rgba(58,32,48,0.4);
-      text-align: center;
-      padding: 0 2rem 1.5rem;
-      line-height: 1.5;
+    @media (max-width: 768px) {
+      .page-header { grid-template-columns: 1fr; padding-top: 120px; }
+      .test-features { grid-template-columns: 1fr; }
+      .interpret-grid { grid-template-columns: 1fr; }
+      .start-banner { flex-direction: column; text-align: center; gap: 1rem; }
+      .journal-header { flex-direction: column; text-align: center; }
+      .benefits-grid { grid-template-columns: 1fr 1fr; }
+      .bottom-banner { flex-direction: column; text-align: center; gap: 1.5rem; }
     }
   </style>
 </head>
-<body>
-
-<!-- Progress bar de scroll -->
+<body style="background: #f3e6ec;">
 <div id="progress-bar"></div>
-
-<!-- ═══════════════════ NAVBAR ═══════════════════ -->
 <nav class="navbar" id="navbar">
   <a href="./index.html" class="nav-logo">Bloomrise</a>
-
   <ul class="nav-links">
-    <li><a href="./index.html#inicio">Inicio</a></li>
+    <li><a href="./index.html">Inicio</a></li>
     <li><a href="./informativa.html">Información</a></li>
     <li><a href="./meditacion.html">Meditacion</a></li>
     <li><a href="./test.html" class="active">Test de Edimburgo</a></li>
-    <li><a href="./index.html#blog">Blog</a></li>
+    <li><a href="./blog.html">Blog</a></li>
   </ul>
-
-  <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- Menú móvil -->
-<div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Menú móvil">
-  <a href="./index.html#inicio" class="mobile-link"><span class="menu-dot"></span>Inicio</a>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="./index.html" class="mobile-link"><span class="menu-dot"></span>Inicio</a>
   <a href="./informativa.html" class="mobile-link"><span class="menu-dot"></span>Información</a>
   <a href="./meditacion.html" class="mobile-link"><span class="menu-dot"></span>Meditacion</a>
-  <a href="./test.html" class="mobile-link active"><span class="menu-dot"></span>Test de Edimburgo</a>
-  <a href="./index.html#blog" class="mobile-link"><span class="menu-dot"></span>Blog</a>
+  <a href="./test.html" class="mobile-link"><span class="menu-dot"></span>Test de Edimburgo</a>
+  <a href="./blog.html" class="mobile-link"><span class="menu-dot"></span>Blog</a>
 </div>
 
-<!-- ═══════════════════ SMOOTH WRAPPER ═══════════════════ -->
 <div id="smooth-wrapper">
 <div id="smooth-content">
 
-  <!-- ═══════════════════ HERO TEST ═══════════════════ -->
-  <section class="hero" id="hero-test" style="min-height: auto; padding: 7rem 2rem 4rem;">
-    <div class="hero-inner" style="grid-template-columns: 1.25fr 0.75fr;">
-      <div class="hero-text fade-up">
-        <div class="page-pill">Sección: Test y autorreconocimiento</div>
-        <h1 class="hero-title" style="font-size: clamp(2.2rem, 5vw, 3.4rem); margin-bottom: 1.5rem;">
-          Test de Edimburgo
-        </h1>
-        <p class="hero-subtitle" style="max-width: 540px;">
-          Conócete, comprende lo que sientes y da el primer paso hacia tu bienestar emocional.
-        </p>
+  <header class="page-header">
+    <div class="fade-up">
+      <div class="page-eyebrow" style="background: #F5DDE8;">Sección: Test y autorreconocimiento</div>
+      <h1 class="page-title">Test de<br>Edimburgo</h1>
+      <p class="page-subtitle">Conócete, comprende lo que sientes y da el primer paso hacia tu bienestar.</p>
+    </div>
+    <div class="page-hero-img fade-up">
+      <img src="./media/heroTest.png" alt="Test Hero Image" style="width: 100%; height: 100%; object-fit: contain; border-radius: 20px;">  
+    </div>
+  </header>
+
+  <main class="test-container">
+    
+    <!-- Info Test -->
+    <div class="info-card fade-up">
+      <div class="info-card-header">
+        <div class="info-card-icon">
+          <img src="./media/queEsTest.png" alt="Test Icon" style="width:80px; height:80px;">
+        </div>
+        <h2 class="info-card-title">¿Qué es el Test de Edimburgo (EPDS)?</h2>
       </div>
-      <div class="hero-image-wrap fade-up" style="animation-delay: 0.1s;">
-        <img src="./media/testClipboard.png" alt="Ilustración de un portapapeles con lista de verificación rosada" style="max-width: 100%; height: auto; border-radius: 28px; box-shadow: 0 12px 36px rgba(91,39,66,0.06);" />
+      <p style="margin-bottom:2rem; color:rgba(58,32,48,0.8); line-height:1.6;">El EPDS es un cuestionario diseñado para identificar signos de depresión postnatal en madres después del parto.</p>
+      
+      <div class="test-features">
+        <div>
+          <div class="feature-icon">
+            <img src="./media/preguntasTest.png" alt="Preguntas Icon" style="width:60px; height:60px;">
+          </div>
+          <div class="feature-title">10 preguntas</div>
+          <div class="feature-desc">Sobre cómo te has sentido durante los últimos 7 días.</div>
+        </div>
+        <div>
+          <div class="feature-icon">
+            <img src="./media/puntuacionTest.png" alt="Puntuación Icon" style="width:60px; height:60px;">
+          </div>
+          <div class="feature-title">Puntuación</div>
+          <div class="feature-desc">Cada respuesta tiene un valor de 0 a 3 puntos.</div>
+        </div>
+        <div>
+          <div class="feature-icon">
+            <img src="./media/resultadoTest.png" alt="Resultado Icon" style="width:60px; height:60px;">
+          </div>
+          <div class="feature-title">Resultado</div>
+          <div class="feature-desc">La puntuación total va de 0 a 30 puntos.</div>
+        </div>
       </div>
     </div>
-  </section>
 
-  <!-- ═══════════════════ INFORMACIÓN DEL TEST ═══════════════════ -->
-  <section class="recursos" style="background: #fdf5f8; padding: 4rem 2rem 2.5rem;">
-    <div class="section-inner" style="max-width: 1000px;">
-
-      <!-- Card: ¿Qué es el EPDS? -->
-      <div class="info-card fade-up">
-        <h2 class="info-card-title">
-          <span style="font-size: 1.6rem; vertical-align: middle;">📋</span>
-          ¿Qué es el Test de Edimburgo (EPDS)?
-        </h2>
-        <p style="font-size: 1.05rem; line-height: 1.8; color: rgba(58,32,48,0.8); margin-bottom: 2rem;">
-          El EPDS (<em>Edinburgh Postnatal Depression Scale</em>) es un cuestionario desarrollado en 1987 y validado internacionalmente, diseñado para identificar signos de depresión postnatal en madres durante el período posparto. Consta de 10 preguntas sobre cómo te has sentido en los últimos 7 días.
-        </p>
-
-        <!-- Estadísticas visuales del test -->
-        <div class="test-stats-row" style="background: linear-gradient(135deg, var(--vino), var(--magenta)); border-radius: 16px; padding: 2rem;">
-          <div class="test-stat-card">
-            <div class="stat-icon">📝</div>
-            <div class="stat-value">10</div>
-            <div class="stat-desc">preguntas sobre cómo te has sentido los últimos 7 días</div>
-          </div>
-          <div class="test-stat-card">
-            <div class="stat-icon">📊</div>
-            <div class="stat-value">0–3</div>
-            <div class="stat-desc">Puntuación por respuesta. Cada opción tiene un valor entre 0 y 3 puntos</div>
-          </div>
-          <div class="test-stat-card">
-            <div class="stat-icon">✅</div>
-            <div class="stat-value">Resultado</div>
-            <div class="stat-desc">La puntuación total va de 0 a 30 puntos con categorías de riesgo claras</div>
-          </div>
+    <!-- Interpretation -->
+    <div class="info-card fade-up" style="margin-top: -75px;">
+      <div class="info-card-header">
+        <div class="info-card-icon">
+          <img src="./media/interpretaTest.png" alt="Interpretación Icon" style="width:80px; height:80px;">
+        </div>
+        <h2 class="info-card-title">¿Cómo se interpreta?</h2>
+      </div>
+      <div class="interpret-grid">
+        <ul class="interpret-list">
+          <li><strong>0 - 9 puntos:</strong> Riesgo bajo de depresión.</li>
+          <li><strong>10 - 12 puntos:</strong> Riesgo moderado (recomendado repetir el test en unas semanas).</li>
+          <li><strong>13 o más puntos:</strong> Riesgo alto de depresión (requiere evaluación médica inmediata).</li>
+        </ul>
+        <div class="interpret-disclaimer">
+          Este test no sustituye una evaluación clínica. Su objetivo es servir como una herramienta de orientación y autoconocimiento.
         </div>
       </div>
-
-      <!-- Card: Interpretación de resultados -->
-      <div class="info-card fade-up">
-        <h2 class="info-card-title">
-          <span style="font-size: 1.6rem; vertical-align: middle;">📈</span>
-          ¿Cómo se interpreta?
-        </h2>
-        <p style="font-size: 1rem; line-height: 1.7; color: rgba(58,32,48,0.7); margin-bottom: 1.5rem;">
-          Esta herramienta no es un diagnóstico clínico. Sirve como un primer indicador orientador para buscar apoyo profesional si es necesario.
-        </p>
-
-        <div class="interpret-grid">
-          <div class="interpret-card green">
-            <div class="interpret-range">0–9 puntos</div>
-            <h4>Probablemente bien 😊</h4>
-            <p>Los resultados no muestran señales significativas de riesgo de depresión postnatal en este momento.</p>
-          </div>
-          <div class="interpret-card yellow">
-            <div class="interpret-range">10–12 puntos</div>
-            <h4>Riesgo leve 🌼</h4>
-            <p>Posible depresión leve. Se recomienda volver a realizar la prueba en dos a cuatro semanas.</p>
-          </div>
-          <div class="interpret-card pink">
-            <div class="interpret-range">13+ puntos</div>
-            <h4>Buscar apoyo profesional 💜</h4>
-            <p>Probable depresión postnatal. Es importante consultar a un profesional de salud lo antes posible.</p>
-          </div>
-        </div>
-
-        <!-- Aviso importante -->
-        <div style="margin-top: 1.5rem; background: rgba(245,221,232,0.3); border-radius: 12px; padding: 1.25rem 1.5rem; border-left: 4px solid var(--rosa-medio); display: flex; gap: 1rem; align-items: flex-start;">
-          <span style="font-size: 1.5rem; flex-shrink: 0; margin-top: 2px;">⚕️</span>
-          <p style="font-size: 0.88rem; line-height: 1.6; color: rgba(58,32,48,0.75);">
-            <strong style="color: var(--vino);">Nota importante:</strong> Este test no sustituye una evaluación clínica. Si tu puntuación es alta o tienes pensamientos de hacerte daño, busca apoyo profesional de inmediato. No estás sola.
-          </p>
-        </div>
-      </div>
-
-      <!-- Card: Realizar el test -->
-      <div class="info-card fade-up" style="background: linear-gradient(135deg, var(--rosa-claro), #fff); text-align: center; padding: 3rem 2rem;">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--vino); margin-bottom: 1rem;">
-          Realiza el test
-        </h2>
-        <p style="font-size: 1rem; line-height: 1.7; color: rgba(58,32,48,0.7); max-width: 480px; margin: 0 auto 2rem;">
-          Responde las 10 preguntas y obtén tu puntuación para conocer cómo te sientes. Es completamente anónimo, sin registros.
-        </p>
-        <button id="btn-start-test" class="btn-primary" style="font-size: 1.05rem; padding: 1rem 2.5rem;">
-          Comenzar test
-          <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1.75rem; flex-wrap: wrap;">
-          <span class="test-badge">Completamente anónimo</span>
-          <span class="test-badge">Solo 10 preguntas</span>
-          <span class="test-badge">Resultados inmediatos</span>
-        </div>
-      </div>
-
-      <!-- ═══════════════════ MOOD TRACKER ═══════════════════ -->
-      <div class="info-card fade-up">
-        <h2 class="info-card-title">
-          <span style="font-size: 1.6rem; vertical-align: middle;">📓</span>
-          Emotional Journal
-          <span style="font-size: 0.75rem; font-weight: 500; color: var(--rosa-malva); background: rgba(182,95,136,0.1); padding: 0.25rem 0.75rem; border-radius: 100px; margin-left: 0.5rem;">Registro emocional diario</span>
-        </h2>
-        <p style="font-size: 1rem; line-height: 1.7; color: rgba(58,32,48,0.7); margin-bottom: 1.5rem;">
-          Como parte de Bloomrise, ofrecemos el <strong>Emotional Journal</strong>: una herramienta de seguimiento emocional diseñada para ayudarte a reconocer cómo te sientes día a día. A través de registros sencillos y constantes, podrás identificar cambios en tu estado emocional.
-        </p>
-
-        <!-- Beneficios en cuadrícula -->
-        <div class="grid-4col" style="margin-bottom: 2rem;">
-          <div class="factor-card" style="text-align: center;">
-            <div class="factor-icon">😊</div>
-            <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--vino); margin-bottom: 0.3rem;">Identifica tus emociones</h4>
-            <p style="font-size: 0.75rem; color: rgba(58,32,48,0.6);">Registra diariamente cómo te sientes.</p>
-          </div>
-          <div class="factor-card" style="text-align: center;">
-            <div class="factor-icon">📈</div>
-            <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--vino); margin-bottom: 0.3rem;">Observa tu progreso</h4>
-            <p style="font-size: 0.75rem; color: rgba(58,32,48,0.6);">Detecta ciclos y patrones emocionales.</p>
-          </div>
-          <div class="factor-card" style="text-align: center;">
-            <div class="factor-icon">🤝</div>
-            <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--vino); margin-bottom: 0.3rem;">Apoyo terapéutico</h4>
-            <p style="font-size: 0.75rem; color: rgba(58,32,48,0.6);">Información útil para profesionales.</p>
-          </div>
-          <div class="factor-card" style="text-align: center;">
-            <div class="factor-icon">✍️</div>
-            <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--vino); margin-bottom: 0.3rem;">Expresa lo que sientes</h4>
-            <p style="font-size: 0.75rem; color: rgba(58,32,48,0.6);">Un espacio para escribir y reflexionar.</p>
-          </div>
-        </div>
-
-        <!-- ¿Cómo te sientes hoy? (Mood tracker interactivo) -->
-        <div class="mood-tracker">
-          <p style="font-size: 1rem; font-weight: 700; color: var(--vino); margin-bottom: 0.25rem;">¿Cómo te sientes hoy?</p>
-          <p style="font-size: 0.82rem; color: rgba(58,32,48,0.55); margin-bottom: 0; line-height: 1.4;">Selecciona el emoji que mejor represente tu estado de ánimo en este momento.</p>
-
-          <div class="mood-emojis" id="mood-emojis">
-            <button class="mood-btn" data-mood="1" aria-label="Muy triste">😢</button>
-            <button class="mood-btn" data-mood="2" aria-label="Triste">😔</button>
-            <button class="mood-btn" data-mood="3" aria-label="Un poco triste">🙁</button>
-            <button class="mood-btn" data-mood="4" aria-label="Preocupada">😟</button>
-            <button class="mood-btn" data-mood="5" aria-label="Neutral">😐</button>
-            <button class="mood-btn" data-mood="6" aria-label="Aceptable">🙂</button>
-            <button class="mood-btn" data-mood="7" aria-label="Bien">😊</button>
-            <button class="mood-btn" data-mood="8" aria-label="Muy bien">😄</button>
-            <button class="mood-btn" data-mood="9" aria-label="Feliz">🥰</button>
-            <button class="mood-btn" data-mood="10" aria-label="Muy feliz">🤩</button>
-          </div>
-          <div class="mood-scale">
-            <span>Muy mal</span>
-            <span>Excelente</span>
-          </div>
-          <p id="mood-feedback" style="margin-top: 1rem; font-size: 0.88rem; color: var(--magenta); font-weight: 500; min-height: 1.3rem; text-align: center;"></p>
-        </div>
-      </div>
-
     </div>
-  </section>
 
-  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+    <!-- Start Banner -->
+    <div class="start-banner fade-up" id="startBanner" style="margin-top: -50px;">
+      <div style="display:flex; align-items:center; gap:1rem;">
+        <img src="./media/realizaTest.png" alt="Test Icon" style="width:80px; height:80px; margin-bottom:0.5rem;">
+        <div style="max-width: 500px;">
+          <h3>Realiza el test</h3>
+          <p>Responde algunas preguntas y obtén tu puntuación para conocer cómo te sientes.</p>
+        </div>
+      </div>
+      <button class="btn-start" onclick="startTest()">Comenzar test ></button>
+    </div>
+
+    <!-- Interactive Test (Hidden by default) -->
+    <div class="interactive-test" id="interactiveTest">
+      <h3 style="font-family:'Playfair Display', serif; font-size:1.8rem; color:var(--vino); margin-bottom:1rem;">Cuestionario EPDS</h3>
+      <p style="color:rgba(58,32,48,0.8); margin-bottom:2rem;">Por favor marque la respuesta que más se acerque a cómo se ha sentido en LOS ÚLTIMOS 7 DÍAS, no solamente cómo se sienta hoy.</p>
+      
+      <form id="epdsForm">
+        <!-- Q1 -->
+        <div class="test-question">
+          <h4>1. He sido capaz de reír y ver el lado bueno de las cosas</h4>
+          <div class="test-options">
+            <label class="test-option"><input type="radio" name="q1" value="0" required> Tanto como siempre</label>
+            <label class="test-option"><input type="radio" name="q1" value="1"> No tanto ahora</label>
+            <label class="test-option"><input type="radio" name="q1" value="2"> Mucho menos</label>
+            <label class="test-option"><input type="radio" name="q1" value="3"> No, no he podido</label>
+          </div>
+        </div>
+        <!-- Q2 -->
+        <div class="test-question">
+          <h4>2. He mirado el futuro con placer</h4>
+          <div class="test-options">
+            <label class="test-option"><input type="radio" name="q2" value="0" required> Tanto como siempre</label>
+            <label class="test-option"><input type="radio" name="q2" value="1"> Algo menos de lo que solía hacer</label>
+            <label class="test-option"><input type="radio" name="q2" value="2"> Definitivamente menos</label>
+            <label class="test-option"><input type="radio" name="q2" value="3"> No, nada</label>
+          </div>
+        </div>
+        <!-- Q3 -->
+        <div class="test-question">
+          <h4>3. Me he culpado sin necesidad cuando las cosas no salían bien</h4>
+          <div class="test-options">
+            <label class="test-option"><input type="radio" name="q3" value="3" required> Sí, la mayoría de las veces</label>
+            <label class="test-option"><input type="radio" name="q3" value="2"> Sí, algunas veces</label>
+            <label class="test-option"><input type="radio" name="q3" value="1"> No muy a menudo</label>
+            <label class="test-option"><input type="radio" name="q3" value="0"> No, nunca</label>
+          </div>
+        </div>
+        <!-- Q4 -->
+        <div class="test-question">
+          <h4>4. He estado ansiosa y preocupada sin motivo</h4>
+          <div class="test-options">
+            <label class="test-option"><input type="radio" name="q4" value="0" required> No, para nada</label>
+            <label class="test-option"><input type="radio" name="q4" value="1"> Casi nada</label>
+            <label class="test-option"><input type="radio" name="q4" value="2"> Sí, a veces</label>
+            <label class="test-option"><input type="radio" name="q4" value="3"> Sí, a menudo</label>
+          </div>
+        </div>
+        <!-- Q5 -->
+        <div class="test-question">
+          <h4>5. He sentido miedo y pánico sin motivo alguno</h4>
+          <div class="test-options">
+            <label class="test-option"><input type="radio" name="q5" value="3" required> Sí, bastante</label>
+            <label class="test-option"><input type="radio" name="q5" value="2"> Sí, a veces</label>
+            <label class="test-option"><input type="radio" name="q5" value="1"> No, no mucho</label>
+            <label class="test-option"><input type="radio" name="q5" value="0"> No, nada</label>
+          </div>
+        </div>
+        <!-- Q6 -->
+        <div class="test-question">
+          <h4>6. Las cosas me oprimen o agobian</h4>
+          <div class="test-options">
+            <label class="test-option"><input type="radio" name="q6" value="3" required> Sí, la mayor parte de las veces</label>
+            <label class="test-option"><input type="radio" name="q6" value="2"> Sí, a veces</label>
+            <label class="test-option"><input type="radio" name="q6" value="1"> No, casi nunca</label>
+            <label class="test-option"><input type="radio" name="q6" value="0"> No, nada</label>
+          </div>
+        </div>
+        <!-- Q7 -->
+        <div class="test-question">
+          <h4>7. Me he sentido tan infeliz que he tenido dificultad para dormir</h4>
+          <div class="test-options">
+            <label class="test-option"><input type="radio" name="q7" value="3" required> Sí, la mayoría de las veces</label>
+            <label class="test-option"><input type="radio" name="q7" value="2"> Sí, a veces</label>
+            <label class="test-option"><input type="radio" name="q7" value="1"> No muy a menudo</label>
+            <label class="test-option"><input type="radio" name="q7" value="0"> No, nada</label>
+          </div>
+        </div>
+        <!-- Q8 -->
+        <div class="test-question">
+          <h4>8. Me he sentido triste y desgraciada</h4>
+          <div class="test-options">
+            <label class="test-option"><input type="radio" name="q8" value="3" required> Sí, casi siempre</label>
+            <label class="test-option"><input type="radio" name="q8" value="2"> Sí, bastante a menudo</label>
+            <label class="test-option"><input type="radio" name="q8" value="1"> No muy a menudo</label>
+            <label class="test-option"><input type="radio" name="q8" value="0"> No, nada</label>
+          </div>
+        </div>
+        <!-- Q9 -->
+        <div class="test-question">
+          <h4>9. He sido tan infeliz que he estado llorando</h4>
+          <div class="test-options">
+            <label class="test-option"><input type="radio" name="q9" value="3" required> Sí, casi siempre</label>
+            <label class="test-option"><input type="radio" name="q9" value="2"> Sí, bastante a menudo</label>
+            <label class="test-option"><input type="radio" name="q9" value="1"> Sólo en ocasiones</label>
+            <label class="test-option"><input type="radio" name="q9" value="0"> No, nunca</label>
+          </div>
+        </div>
+        <!-- Q10 -->
+        <div class="test-question">
+          <h4>10. He pensado en hacerme daño a mí misma</h4>
+          <div class="test-options">
+            <label class="test-option"><input type="radio" name="q10" value="3" required> Sí, bastante a menudo</label>
+            <label class="test-option"><input type="radio" name="q10" value="2"> A veces</label>
+            <label class="test-option"><input type="radio" name="q10" value="1"> Casi nunca</label>
+            <label class="test-option"><input type="radio" name="q10" value="0"> No, nunca</label>
+          </div>
+        </div>
+        
+        <p class="test-citation">Cuestionario Obtenido de la British Journal of Psychiatry [Revista Británica de Psiquiatría] J.L. Cox, J.M. Holden, R. Sagovsky</p>
+        
+        <div style="text-align: center;">
+          <button type="button" class="btn-start" onclick="calculateScore()">Ver resultados</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Result UI -->
+    <div class="result-ui" id="resultUI">
+      <div class="score-card">
+        <h3>Tu Puntuación</h3>
+        <p class="score-number" id="scoreNumber">0</p>
+        <p class="score-sub">de 30 puntos</p>
+      </div>
+      <p class="result-text" id="resultText"></p>
+      <p style="font-size: 0.85rem; color: rgba(58,32,48,0.6); margin-top: 1rem;">Este cuestionario es orientativo y no reemplaza una evaluación profesional.</p>
+      <div style="margin-top: 2rem;">
+        <button class="btn-start" onclick="window.location.reload()">Hacer el test de nuevo</button>
+      </div>
+    </div>
+
+    <!-- Agregar a valoracion del grupo
+
+    <div class="journal-section fade-up">
+      <div class="journal-header">
+        <div class="journal-text">
+          <h4 style="font-size:0.8rem; font-weight:700; color:var(--rosa-malva); letter-spacing:0.1em; text-transform:uppercase;">Emotional Journal</h4>
+          <h2>Registro anecdótico emocional diario</h2>
+          <p>Como parte de Bloomrise, ofrecemos el Emotional Journal, una herramienta de seguimiento emocional diseñada para ayudarte a reconocer cómo te sientes durante el posparto.</p>
+          <p>A través de registros sencillos y constantes, podrás identificar cambios en tu estado emocional y compartir esta información durante procesos de acompañamiento terapéutico.</p>
+        </div>
+        <div class="journal-img">
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="var(--rosa-malva)"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+        </div>
+      </div>
+      
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">♡</div>
+          <div class="benefit-title">Identifica tus emociones</div>
+          <div class="benefit-desc">Registra diariamente cómo te sientes.</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg></div>
+          <div class="benefit-title">Observa tu progreso</div>
+          <div class="benefit-desc">Detecta cambios y patrones emocionales.</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></div>
+          <div class="benefit-title">Facilita el acompañamiento</div>
+          <div class="benefit-desc">Proporciona información útil para profesionales.</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
+          <div class="benefit-title">Expresa lo que sientes</div>
+          <div class="benefit-desc">Un espacio seguro para escribir pensamientos.</div>
+        </div>
+      </div>
+      
+      <div class="mood-tracker">
+        <h3>¿Cómo te sientes hoy?</h3>
+        <div class="emojis">
+          <div class="emoji-item">😢 <span class="emoji-num">1</span></div>
+          <div class="emoji-item">😟 <span class="emoji-num">2</span></div>
+          <div class="emoji-item">🙁 <span class="emoji-num">3</span></div>
+          <div class="emoji-item">😐 <span class="emoji-num">4</span></div>
+          <div class="emoji-item">🙂 <span class="emoji-num">5</span></div>
+          <div class="emoji-item">😊 <span class="emoji-num">6</span></div>
+          <div class="emoji-item">😁 <span class="emoji-num">7</span></div>
+          <div class="emoji-item">🥰 <span class="emoji-num">8</span></div>
+          <div class="emoji-item">🤩 <span class="emoji-num">9</span></div>
+          <div class="emoji-item">✨ <span class="emoji-num">10</span></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="bottom-banner fade-up">
+      <div style="display:flex; align-items:center; gap:1.5rem;">
+        <div style="background:white; padding:1rem; border-radius:16px; color:var(--rosa-malva);">♡</div>
+        <div>
+          <h3>Disponible a través de Bloomrise</h3>
+          <p>El Emotional Journal forma parte de las herramientas complementarias de nuestro proyecto.</p>
+        </div>
+      </div>
+      <a href="./index.html" class="btn-outline">Conocer Emotional Journal ></a>
+    </div>
+    -->
+
+  </main>
+
   <footer>
     <div class="footer-inner">
       <div class="footer-logo">Bloomrise</div>
       <p class="footer-tagline">Acompañándote con información, apoyo y comprensión en cada etapa.</p>
       <div class="footer-links">
-        <a href="./index.html#inicio">Inicio</a>
+        <a href="./index.html">Inicio</a>
         <a href="./informativa.html">Información</a>
         <a href="./meditacion.html">Meditacion</a>
         <a href="./test.html">Test de Edimburgo</a>
-        <a href="./index.html#blog">Blog</a>
+        <a href="./blog.html">Blog</a>
       </div>
       <div class="footer-divider"></div>
       <p class="footer-copy">© 2026 Bloomrise · Este sitio tiene fines informativos y no reemplaza la atención médica profesional.</p>
     </div>
   </footer>
 
-</div><!-- #smooth-content -->
-</div><!-- #smooth-wrapper -->
+</div>
+</div>
 
-<!-- ══════════════════════════════════════
-     WIZARD MODAL DEL TEST EPDS
-══════════════════════════════════════ -->
-<div id="test-wizard-overlay" role="dialog" aria-modal="true" aria-labelledby="wizard-title">
-  <div class="wizard-modal" id="wizard-modal">
-
-    <!-- Botón cerrar -->
-    <button class="wizard-close" id="wizard-close" aria-label="Cerrar test">✕</button>
-
-    <!-- Header del wizard (fijo en la parte superior) -->
-    <div class="wizard-header">
-      <h2 id="wizard-title">Test de Edimburgo (EPDS)</h2>
-      <div class="wizard-progress-bar">
-        <div class="wizard-progress-fill" id="wizard-progress-fill" style="width: 0%;"></div>
-      </div>
-      <p class="wizard-step-label" id="wizard-step-label">Pregunta 1 de 10</p>
-    </div>
-
-    <!-- Pantalla de pregunta (se muestra durante el test) -->
-    <div class="wizard-body" id="wizard-question-screen">
-      <p class="wizard-question-sub" id="wizard-question-sub">Durante los últimos 7 días...</p>
-      <p class="wizard-question-text" id="wizard-question-text">...</p>
-
-      <div class="wizard-options" id="wizard-options-container">
-        <!-- Las opciones se generan dinámicamente por JS -->
-      </div>
-
-      <p class="wizard-validation-msg" id="wizard-validation-msg">
-        Por favor selecciona una respuesta para continuar.
-      </p>
-    </div>
-
-    <!-- Footer de navegación del wizard -->
-    <div class="wizard-footer" id="wizard-nav-footer">
-      <button class="wizard-btn-back" id="wizard-btn-back">← Anterior</button>
-      <button class="wizard-btn-next" id="wizard-btn-next">
-        Siguiente <span id="btn-next-arrow">→</span>
-      </button>
-    </div>
-
-    <!-- Pantalla de resultado final -->
-    <div class="result-screen" id="result-screen">
-      <div class="result-score-circle" id="result-circle">
-        <div class="result-score-num" id="result-score">0</div>
-        <div class="result-score-label">de 30 puntos</div>
-      </div>
-      <h2 class="result-title" id="result-title">Tu resultado</h2>
-      <p class="result-description" id="result-description"></p>
-      <div class="result-recommendation" id="result-recommendation"></div>
-      <div class="result-actions">
-        <button class="btn-restart" id="btn-restart">
-          ↺ Reiniciar el test
-        </button>
-        <a href="./informativa.html#contacto" class="btn-primary">
-          Contactarnos →
-        </a>
-      </div>
-    </div>
-
-    <!-- Nota de autoría EPDS -->
-    <p class="epds-note" id="epds-note">
-      Escala de Depresión Posparto de Edimburgo (EPDS) — J.L. Cox, J.M. Holden, R. Sagovsky (1987).<br>
-      Reproducida de la <em>British Journal of Psychiatry</em>. Solo orientativa, no sustituye diagnóstico clínico.
-    </p>
+<!-- Custom Modal Overlay -->
+<div class="custom-modal-overlay" id="customAlertModal">
+  <div class="custom-modal">
+    <div class="custom-modal-icon">!</div>
+    <h3 class="custom-modal-title">Aviso importante</h3>
+    <p class="custom-modal-text">Por favor, responde a todas las 10 preguntas para poder obtener un resultado preciso y orientarte mejor.</p>
+    <button class="custom-modal-btn" onclick="closeCustomAlert()">Entendido</button>
   </div>
 </div>
 
-<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
 <script>
-  /* ──── HAMBURGER MENU ──── */
+  /* ──── MENU ──── */
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
-  const mobileLinks = document.querySelectorAll('.mobile-link');
-
-  function toggleMenu(open) {
-    hamburger.classList.toggle('open', open);
-    mobileMenu.classList.toggle('open', open);
-    hamburger.setAttribute('aria-expanded', open);
-  }
-
   hamburger.addEventListener('click', () => {
-    const isOpen = mobileMenu.classList.contains('open');
-    toggleMenu(!isOpen);
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
   });
 
-  mobileLinks.forEach(link => link.addEventListener('click', () => toggleMenu(false)));
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) toggleMenu(false);
+  /* ─── LENIS & GSAP ──── */
+  const lenis = new Lenis({ 
+    duration: 1.8, 
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+    smoothTouch: true,
+    touchMultiplier: 2
   });
-
-  /* ─── LENIS SMOOTH SCROLL ──── */
-  const lenis = new Lenis({
-    duration: 1.35,
-    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothTouch: false,
-  });
-
   gsap.registerPlugin(ScrollTrigger);
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add(t => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
-
-  /* ─── Progress bar de scroll ─── */
-  lenis.on('scroll', ({ scroll, limit }) => {
-    document.getElementById('progress-bar').style.width = (scroll / limit * 100) + '%';
-  });
-
-  /* ─── NAVBAR SCROLL STYLE ──── */
+  lenis.on('scroll', ({ scroll, limit }) => { document.getElementById('progress-bar').style.width = (scroll / limit * 100) + '%'; });
+  
   const navbar = document.getElementById('navbar');
-  lenis.on('scroll', ({ scroll }) => {
-    navbar.classList.toggle('scrolled', scroll > 30);
-  });
-
-  /* ──── GSAP ANIMACIONES DE ENTRADA ──── */
+  lenis.on('scroll', ({ scroll }) => { navbar.classList.toggle('scrolled', scroll > 30); });
+  
   gsap.utils.toArray('.fade-up').forEach((el, i) => {
-    gsap.fromTo(el,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1, y: 0, duration: 0.9, delay: i * 0.08, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+    gsap.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } });
+  });
+
+  /* ──── TEST LOGIC ──── */
+  function startTest() {
+    document.getElementById('startBanner').style.display = 'none';
+    document.getElementById('interactiveTest').style.display = 'block';
+    setTimeout(() => {
+      window.scrollTo({ top: document.getElementById('interactiveTest').offsetTop - 100, behavior: 'smooth' });
+    }, 100);
+  }
+
+  function calculateScore() {
+    const form = document.getElementById('epdsForm');
+    const formData = new FormData(form);
+    let totalScore = 0;
+    let answered = 0;
+
+    for (let i = 1; i <= 10; i++) {
+      if (formData.has('q' + i)) {
+        totalScore += parseInt(formData.get('q' + i));
+        answered++;
       }
-    );
-  });
-
-  /* ══════════════════════════════════════════════
-     MOOD TRACKER
-  ══════════════════════════════════════════════ */
-  const moodMessages = {
-    1: "Gracias por compartir cómo te sientes. No estás sola. 💜",
-    2: "Es válido sentirse así. Considera hablar con alguien de confianza.",
-    3: "A veces los días son difíciles. Es importante reconocerlo.",
-    4: "La preocupación es normal. Respira con calma. 🌸",
-    5: "Un día neutral está bien. Cada momento tiene su valor.",
-    6: "¡Qué bueno que te encuentres aceptable hoy! Sigue adelante.",
-    7: "¡Me alegra que estés bien! Eso merece un momento de gratitud. 😊",
-    8: "¡Qué buen día! Esa energía es hermosa. ✨",
-    9: "¡Qué lindo sentirse así! Comparte esa alegría. 🥰",
-    10: "¡Increíble! Ese bienestar brilla. ¡Disfrútalo mucho! 🌟",
-  };
-
-  document.querySelectorAll('.mood-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-      this.classList.add('selected');
-      const mood = this.dataset.mood;
-      const feedbackEl = document.getElementById('mood-feedback');
-      feedbackEl.textContent = moodMessages[mood] || '';
-      // Micro-animación con GSAP
-      gsap.fromTo(feedbackEl, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35 });
-    });
-  });
-
-  /* ══════════════════════════════════════════════
-     TEST EPDS — DATOS Y LÓGICA
-     Basado en la Escala de Edimburgo (EPDS, 1987)
-     Puntuación 0–3 por pregunta (30 máximo total)
-  ══════════════════════════════════════════════ */
-  const epdsQuestions = [
-    {
-      text: "He sido capaz de reír y ver el lado positivo de las cosas",
-      options: [
-        { text: "Tanto como siempre", score: 0 },
-        { text: "No tanto ahora", score: 1 },
-        { text: "Definitivamente menos", score: 2 },
-        { text: "No, nada en absoluto", score: 3 }
-      ]
-    },
-    {
-      text: "He disfrutado mirar hacia adelante",
-      options: [
-        { text: "Tanto como siempre", score: 0 },
-        { text: "Un poco menos que antes", score: 1 },
-        { text: "Definitivamente menos que antes", score: 2 },
-        { text: "Apenas en absoluto", score: 3 }
-      ]
-    },
-    {
-      text: "Cuando las cosas han salido mal, me he culpado a mí misma innecesariamente",
-      options: [
-        { text: "Sí, la mayoría de las veces", score: 3 },
-        { text: "Sí, a veces", score: 2 },
-        { text: "No muy seguido", score: 1 },
-        { text: "No, nunca", score: 0 }
-      ]
-    },
-    {
-      text: "He estado ansiosa o preocupada sin tener motivo",
-      options: [
-        { text: "No, para nada", score: 0 },
-        { text: "Casi nunca", score: 1 },
-        { text: "Sí, a veces", score: 2 },
-        { text: "Sí, muy seguido", score: 3 }
-      ]
-    },
-    {
-      text: "He sentido miedo o pánico sin motivo alguno",
-      options: [
-        { text: "Sí, bastante seguido", score: 3 },
-        { text: "Sí, a veces", score: 2 },
-        { text: "No, no mucho", score: 1 },
-        { text: "No, nada en absoluto", score: 0 }
-      ]
-    },
-    {
-      text: "Las cosas me han agobiado",
-      options: [
-        { text: "Sí, la mayor parte del tiempo he sido incapaz de hacerles frente", score: 3 },
-        { text: "Sí, a veces no he podido hacerles frente tan bien como siempre", score: 2 },
-        { text: "No, la mayor parte del tiempo las he manejado bien", score: 1 },
-        { text: "No, he manejado las cosas tan bien como siempre", score: 0 }
-      ]
-    },
-    {
-      text: "Me he sentido tan desdichada que he tenido dificultades para dormir",
-      options: [
-        { text: "Sí, la mayoría de las veces", score: 3 },
-        { text: "Sí, a veces", score: 2 },
-        { text: "No muy seguido", score: 1 },
-        { text: "No, nada en absoluto", score: 0 }
-      ]
-    },
-    {
-      text: "Me he sentido triste o desgraciada",
-      options: [
-        { text: "Sí, la mayoría de las veces", score: 3 },
-        { text: "Sí, bastante seguido", score: 2 },
-        { text: "No muy seguido", score: 1 },
-        { text: "No, nada en absoluto", score: 0 }
-      ]
-    },
-    {
-      text: "Me he sentido tan desdichada que he llorado",
-      options: [
-        { text: "Sí, la mayor parte del tiempo", score: 3 },
-        { text: "Sí, bastante seguido", score: 2 },
-        { text: "Solo en ocasiones", score: 1 },
-        { text: "No, nunca", score: 0 }
-      ]
-    },
-    {
-      text: "He pensado hacerme daño a mí misma",
-      options: [
-        { text: "Sí, bastante seguido", score: 3 },
-        { text: "A veces", score: 2 },
-        { text: "Casi nunca", score: 1 },
-        { text: "Nunca", score: 0 }
-      ]
-    }
-  ];
-
-  /* ══════════════════════════════════════════════
-     WIZARD — ESTADO Y LÓGICA
-  ══════════════════════════════════════════════ */
-  let currentStep = 0;
-  let answers = new Array(epdsQuestions.length).fill(null); // null = no respondido
-
-  const overlay     = document.getElementById('test-wizard-overlay');
-  const progFill    = document.getElementById('wizard-progress-fill');
-  const stepLabel   = document.getElementById('wizard-step-label');
-  const questionText = document.getElementById('wizard-question-text');
-  const optionsContainer = document.getElementById('wizard-options-container');
-  const validationMsg = document.getElementById('wizard-validation-msg');
-  const btnNext     = document.getElementById('wizard-btn-next');
-  const btnBack     = document.getElementById('wizard-btn-back');
-  const btnNextArrow = document.getElementById('btn-next-arrow');
-  const questionScreen = document.getElementById('wizard-question-screen');
-  const resultScreen = document.getElementById('result-screen');
-  const wizardFooter = document.getElementById('wizard-nav-footer');
-  const epdsNote    = document.getElementById('epds-note');
-
-  /* — Abrir el wizard — */
-  document.getElementById('btn-start-test').addEventListener('click', openWizard);
-
-  function openWizard() {
-    currentStep = 0;
-    answers = new Array(epdsQuestions.length).fill(null);
-    overlay.classList.add('active');
-    lenis.stop(); // Pausar Lenis mientras el modal está abierto
-    showQuestion(0);
-    document.body.style.overflow = 'hidden'; // evitar doble scroll
-  }
-
-  /* — Cerrar el wizard — */
-  document.getElementById('wizard-close').addEventListener('click', closeWizard);
-  overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) closeWizard();
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && overlay.classList.contains('active')) closeWizard();
-  });
-
-  function closeWizard() {
-    overlay.classList.remove('active');
-    lenis.start(); // Reanudar Lenis
-    document.body.style.overflow = '';
-    // Reset visual
-    questionScreen.style.display = 'block';
-    resultScreen.classList.remove('active');
-    wizardFooter.style.display = 'flex';
-    epdsNote.style.display = 'block';
-  }
-
-  /* — Mostrar una pregunta dada su índice — */
-  function showQuestion(idx) {
-    const q = epdsQuestions[idx];
-    const total = epdsQuestions.length;
-
-    // Actualizar progreso
-    const progress = (idx / total) * 100;
-    progFill.style.width = progress + '%';
-    stepLabel.textContent = `Pregunta ${idx + 1} de ${total}`;
-
-    // Texto de la pregunta
-    questionText.textContent = q.text;
-
-    // Limpiar opciones anteriores
-    optionsContainer.innerHTML = '';
-    validationMsg.classList.remove('visible');
-
-    // Generar botones de opciones
-    q.options.forEach((opt, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'wizard-option' + (answers[idx] !== null && answers[idx] === opt.score ? ' selected' : '');
-      btn.innerHTML = `<span class="wizard-option-dot"></span>${opt.text}`;
-      btn.dataset.score = opt.score;
-      btn.dataset.optIdx = i;
-
-      btn.addEventListener('click', function() {
-        // Deseleccionar todas las opciones
-        optionsContainer.querySelectorAll('.wizard-option').forEach(b => b.classList.remove('selected'));
-        this.classList.add('selected');
-        // Guardar respuesta
-        answers[idx] = parseInt(this.dataset.score);
-        validationMsg.classList.remove('visible');
-      });
-
-      optionsContainer.appendChild(btn);
-    });
-
-    // Estado del botón "Anterior"
-    btnBack.style.visibility = idx === 0 ? 'hidden' : 'visible';
-
-    // Texto del botón "Siguiente" cambia en la última pregunta
-    if (idx === total - 1) {
-      btnNext.innerHTML = 'Ver resultado <span id="btn-next-arrow">✓</span>';
-    } else {
-      btnNext.innerHTML = 'Siguiente <span id="btn-next-arrow">→</span>';
     }
 
-    // Animación de entrada de la pregunta con GSAP
-    gsap.fromTo(questionScreen,
-      { opacity: 0, x: 20 },
-      { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' }
-    );
-  }
-
-  /* — Botón "Siguiente" — */
-  btnNext.addEventListener('click', () => {
-    if (answers[currentStep] === null) {
-      validationMsg.classList.add('visible');
-      gsap.fromTo(validationMsg, { x: -6 }, { x: 0, duration: 0.3, ease: 'elastic.out(1,0.5)' });
+    if (answered < 10) {
+      showCustomAlert();
       return;
     }
 
-    if (currentStep < epdsQuestions.length - 1) {
-      currentStep++;
-      showQuestion(currentStep);
+    document.getElementById('interactiveTest').style.display = 'none';
+    document.getElementById('resultUI').style.display = 'block';
+    document.getElementById('scoreNumber').innerText = totalScore;
+
+    let resultText = '';
+    if (totalScore >= 0 && totalScore <= 9) {
+      resultText = "Tus respuestas no muestran señales significativas de depresión posparto en este momento. Sin embargo, es importante seguir prestando atención a tu bienestar. Si notas cambios en tu estado de ánimo no dudes en buscar apoyo.";
+    } else if (totalScore >= 10 && totalScore <= 12) {
+      resultText = "Tus respuestas sugieren la presencia de algunas señales que podrían estar afectando tu bienestar emocional. Se recomienda repetir el test dentro de unas semanas. Si los síntomas persisten o aumentan, considera buscar orientación profesional.";
     } else {
-      showResult();
+      resultText = "Tus respuestas indican la presencia de varias señales asociadas a la depresión posparto. Se recomienda buscar a un profesional de la salud para recibir una valoración más completa y el apoyo adecuado.";
     }
-  });
-
-  /* — Botón "Anterior" — */
-  btnBack.addEventListener('click', () => {
-    if (currentStep > 0) {
-      currentStep--;
-      showQuestion(currentStep);
-    }
-  });
-
-  /* — Calcular y mostrar el resultado final — */
-  function showResult() {
-    const total = answers.reduce((sum, val) => sum + (val ?? 0), 0);
-
-    // Ocultar pantalla de pregunta y mostrar resultado
-    questionScreen.style.display = 'none';
-    wizardFooter.style.display = 'none';
-    epdsNote.style.display = 'block';
-    resultScreen.classList.add('active');
-
-    // Barra de progreso al 100%
-    progFill.style.width = '100%';
-    stepLabel.textContent = '¡Test completado!';
-
-    // Rellenar datos del resultado
-    document.getElementById('result-score').textContent = total;
-    const circle = document.getElementById('result-circle');
-    const titleEl = document.getElementById('result-title');
-    const descEl = document.getElementById('result-description');
-    const recomEl = document.getElementById('result-recommendation');
-
-    if (total <= 9) {
-      circle.className = 'result-score-circle low';
-      titleEl.textContent = 'Probablemente te encuentras bien';
-      descEl.textContent = 'Tu puntuación no muestra señales significativas de depresión postnatal en este momento. Sigue cuidándote y apoyándote en quienes te rodean.';
-      recomEl.textContent = '✨ Sigue realizando actividades que te den bienestar. Si en algún momento sientes que algo cambia, no dudes en repetir el test o consultar con un profesional.';
-    } else if (total <= 12) {
-      circle.className = 'result-score-circle moderate';
-      titleEl.textContent = 'Podrías estar experimentando síntomas leves';
-      descEl.textContent = 'Tu puntuación sugiere que podrías estar experimentando algunos síntomas de depresión leve. Es un buen momento para buscar apoyo y hablar con alguien de confianza.';
-      recomEl.textContent = '🌼 Se recomienda volver a realizar este test en 2 a 4 semanas. Comparte cómo te sientes con tu pareja, familia o médico. No tienes que enfrentarlo sola.';
-    } else {
-      circle.className = 'result-score-circle high';
-      titleEl.textContent = 'Es importante que busques apoyo profesional';
-      descEl.textContent = 'Tu puntuación indica signos que podrían corresponder a depresión postnatal. Esto no te define como madre. Es una condición tratable y hay personas que pueden ayudarte.';
-      recomEl.textContent = '💜 Por favor, habla con tu médico, obstetra o psicólogo lo antes posible. Si tienes pensamientos de hacerte daño, busca ayuda de emergencia de inmediato. Pedir ayuda es un acto de valentía y amor.';
-    }
-
-    // Animación del resultado
-    gsap.timeline()
-      .fromTo(resultScreen, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' })
-      .fromTo(circle, { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.4)' }, '-=0.2');
+    
+    document.getElementById('resultText').innerText = resultText;
+    
+    setTimeout(() => {
+      window.scrollTo({ top: document.getElementById('resultUI').offsetTop - 100, behavior: 'smooth' });
+    }, 100);
   }
 
-  /* — Botón "Reiniciar el test" — */
-  document.getElementById('btn-restart').addEventListener('click', () => {
-    answers = new Array(epdsQuestions.length).fill(null);
-    currentStep = 0;
-    questionScreen.style.display = 'block';
-    resultScreen.classList.remove('active');
-    wizardFooter.style.display = 'flex';
-    showQuestion(0);
-  });
+  function showCustomAlert() {
+    document.getElementById('customAlertModal').classList.add('active');
+  }
+  function closeCustomAlert() {
+    document.getElementById('customAlertModal').classList.remove('active');
+  }
 </script>
-
 </body>
 </html>
