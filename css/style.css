@@ -368,7 +368,7 @@
       justify-content: center;
       align-items: center;
       gap: 0.6rem;
-      background: linear-gradient(135deg, var(--rosa-claro), var(--rosa-emp));
+      background: linear-gradient(135deg, var(--rosa-medio), var(--rosa-malva));
       border-radius: 100px;
       padding: 0.6rem 1.6rem;
     }
@@ -376,7 +376,7 @@
     .section-header-pill span {
       font-size: 1.5rem;
       width: 40px; height: 40px;
-      color: var(--magenta);
+      color: var(--blanco);
     }
 
     .section-header-pill img {
@@ -388,12 +388,13 @@
       font-family: 'Poppins', sans-serif;
       font-size: 1.1rem;
       font-weight: 600;
-      color: var(--magenta);
+      color: var(--blanco);
     }
 
     .section-header-pill h2 em {
       font-style: normal;
-      color: var(--magenta);
+      color: var(--blanco);
+      font-weight: 600;
     }
 
     /* Cards de recursos */
@@ -433,6 +434,10 @@
       justify-content: center;
       font-size: 1.6rem;
       flex-shrink: 0;
+    }
+
+    .recurso-icon img{
+      width: 80px; height: 80px;
     }
 
     .recurso-body { flex: 1; }
@@ -868,7 +873,7 @@
       .hamburger { display: flex; }
 
       .hero {
-      min-height: 60svh;
+      min-height: 70svh;
       }
 
       .hero-inner {
