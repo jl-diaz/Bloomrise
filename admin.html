@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="./css/style.css" />
   <style>
     body { background: #f3e6ec; font-family: 'Poppins', sans-serif; }
-    .admin-container { max-width: 1200px; margin: 100px auto; padding: 2rem; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    .admin-container { display: none; max-width: 1200px; margin: 100px auto; padding: 2rem; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
     .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #F5DDE8; padding-bottom: 1rem; }
     .tab-btn { background: none; border: none; font-size: 1.1rem; font-weight: 600; color: #a08496; cursor: pointer; padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.3s; }
     .tab-btn.active { color: var(--vino); background: #F5DDE8; }
@@ -146,8 +146,11 @@
     </div>
   </div>
 
-  <div class="admin-container">
-    <h1 style="font-family: 'Playfair Display'; color: var(--vino); margin-bottom: 2rem;">Panel de Control</h1>
+  <div class="admin-container" id="adminContainer">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <h1 style="font-family: 'Playfair Display'; color: var(--vino); margin: 0;">Panel de Control</h1>
+      <button onclick="logoutAdmin()" style="background: #f0e6eb; color: var(--vino); border: none; padding: 0.6rem 1.4rem; border-radius: 100px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: background 0.3s;">Cerrar Sesión</button>
+    </div>
     
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('messages')">Mensajes Recibidos</button>
@@ -249,21 +252,51 @@
 
   <script>
     const API_URL = 'https://bloomrise-api.vercel.app/api';
-    const PASSWORD = 'bloomadmin26';
+    // Hash criptográfico SHA-256 de la contraseña (irreversible)
+    const ADMIN_HASH = '8d8a4f4dfa873e235ee90997c51a5bb220ac2b3449007aa4201dc3af6480ed58';
     
     let currentPage = 1;
     let currentBlogPage = 1;
     let loadedMessages = [];
 
-    function checkPassword() {
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function checkPassword() {
       const input = document.getElementById('adminPassword').value;
-      if(input === PASSWORD) {
-        document.getElementById('loginOverlay').style.display = 'none';
-        fetchMessages();
-        fetchBlogPosts();
+      const inputHash = await sha256(input);
+      if(inputHash === ADMIN_HASH) {
+        sessionStorage.setItem('admin_auth', 'true');
+        unlockAdmin();
       } else {
         document.getElementById('loginError').style.display = 'block';
       }
+    }
+
+    function unlockAdmin() {
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('adminContainer').style.display = 'block';
+      document.getElementById('loginError').style.display = 'none';
+      document.getElementById('adminPassword').value = '';
+      fetchMessages();
+      fetchBlogPosts();
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem('admin_auth');
+      window.location.reload();
+    }
+
+    document.getElementById('adminPassword').addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    if (sessionStorage.getItem('admin_auth') === 'true') {
+      unlockAdmin();
     }
 
     function switchTab(tab) {
