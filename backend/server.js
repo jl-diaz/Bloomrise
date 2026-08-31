@@ -152,3 +152,5 @@ app.post('/api/forum/:id/comments', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor backend corriendo en el puerto ${PORT}`);
 });
+
+module.exports = app;
