@@ -213,6 +213,17 @@
     </div>
 </div>
 
+<!-- Modal No Hay Entrada -->
+<div id="noPostModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 400px; text-align: center; border-radius: 24px; padding: 3rem 2rem;">
+        <span class="close-modal" onclick="closeNoPostModal()">&times;</span>
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🌸</div>
+        <h3 style="color: var(--vino); font-family: 'Playfair Display', serif; margin-bottom: 1rem;">Sin entrada</h3>
+        <p style="color: #666; margin-bottom: 2rem;">Aún no se ha publicado una entrada de blog para este día. ¡Vuelve más tarde o explora otros días!</p>
+        <button onclick="closeNoPostModal()" style="background: var(--rosa-malva); color: white; border: none; padding: 0.8rem 2rem; border-radius: 100px; cursor: pointer; font-weight: 600;">Entendido</button>
+    </div>
+</div>
+
 
 <script>
     /* ──── CONFIG ──── */
@@ -291,6 +302,7 @@
             const res = await fetch(`${API_URL}/blog/${dateStr}`);
             const data = await res.json();
             const display = document.getElementById('blogPostDisplay');
+            
             if(data.success && data.data) {
                 document.getElementById('blogDisplayDate').innerText = `Entrada del ${dateStr}`;
                 document.getElementById('blogDisplayContent').innerHTML = data.data.content;
@@ -298,9 +310,20 @@
                 lenis.scrollTo(display, { offset: -100 });
             } else {
                 display.style.display = 'none';
-                alert("No hay entrada de blog para este día.");
+                document.getElementById('noPostModal').style.display = 'flex';
+                setTimeout(() => document.getElementById('noPostModal').classList.add('active'), 10);
             }
-        } catch(e) { console.error(e); }
+        } catch(e) { 
+            console.error(e); 
+            document.getElementById('noPostModal').style.display = 'flex';
+            setTimeout(() => document.getElementById('noPostModal').classList.add('active'), 10);
+        }
+    }
+
+    function closeNoPostModal() {
+        const mod = document.getElementById('noPostModal');
+        mod.classList.remove('active');
+        setTimeout(() => mod.style.display = 'none', 300);
     }
 
     /* ──── FORUM LOGIC ──── */
