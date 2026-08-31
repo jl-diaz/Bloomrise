@@ -93,6 +93,30 @@ app.get('/api/blog-dates', async (req, res) => {
   }
 });
 
+app.get('/api/blog', async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const posts = await BlogPost.find().sort({ date: -1 }).skip(skip).limit(limit);
+    const total = await BlogPost.countDocuments();
+
+    res.json({ success: true, data: posts, total, page, totalPages: Math.ceil(total / limit) });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.delete('/api/blog/:id', async (req, res) => {
+  try {
+    await BlogPost.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // --- Rutas del Foro ---
 app.post('/api/forum', async (req, res) => {
   try {
