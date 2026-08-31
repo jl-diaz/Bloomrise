@@ -44,6 +44,67 @@
     /* Inputs Base */
     input, textarea, select { font-size: 16px !important; }
 
+    /* Modal */
+    .modal-overlay { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: rgba(43, 16, 30, 0.6); 
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 9999; 
+      display: none; 
+      align-items: center; 
+      justify-content: center; 
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-content { 
+      background: #fdf7f9; 
+      width: 100%; 
+      max-width: 550px; 
+      border-radius: 24px; 
+      padding: 1.5rem; 
+      max-height: 85vh; 
+      overflow-y: auto; 
+      position: relative; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      box-sizing: border-box;
+    }
+    .modal-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #f0d0dc;
+      padding-bottom: 0.5rem;
+    }
+    .modal-header-title {
+      font-family: 'Playfair Display', serif;
+      color: var(--vino);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .close-modal-btn { 
+      background: white; 
+      border: 1px solid #f0d0dc; 
+      width: 34px; 
+      height: 34px; 
+      border-radius: 50%; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      cursor: pointer; 
+      color: var(--vino); 
+      font-size: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      flex-shrink: 0;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .admin-container { 
@@ -57,6 +118,7 @@
       .table-wrapper { overflow-x: auto; margin-bottom: 2rem; }
       th, td { padding: 0.8rem; font-size: 0.9rem; }
       .blog-form button { width: 100%; align-self: center; }
+      .modal-content { padding: 1.2rem 1rem; max-height: 90vh; }
     }
   </style>
 </head>
@@ -90,6 +152,7 @@
               <th>Email</th>
               <th>Mensaje</th>
               <th>Estado</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody id="messagesTableBody">
@@ -98,6 +161,31 @@
         </table>
       </div>
       <div class="pagination" id="messagesPagination"></div>
+    </div>
+
+    <!-- Modal Ver Mensaje Completo -->
+    <div id="messageModal" class="modal-overlay" onclick="if(event.target === this) closeMessageModal()">
+      <div class="modal-content">
+        <div class="modal-header-bar">
+          <h3 class="modal-header-title">Detalle del Mensaje</h3>
+          <button class="close-modal-btn" onclick="closeMessageModal()" title="Cerrar">✕</button>
+        </div>
+        <div style="background: white; padding: 1.5rem; border-radius: 18px; border: 1px solid #f7e2eb;">
+          <div style="margin-bottom: 0.8rem;">
+            <strong style="color: var(--vino);">De:</strong> <span id="modalMsgEmail" style="color: #4a3a43; font-weight: 500;"></span>
+          </div>
+          <div style="margin-bottom: 0.8rem;">
+            <strong style="color: var(--vino);">Fecha:</strong> <span id="modalMsgDate" style="color: #666;"></span>
+          </div>
+          <div style="margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
+            <strong style="color: var(--vino);">Estado:</strong> <span id="modalMsgStatusContainer"></span>
+          </div>
+          <div style="border-top: 1px solid #f0d0dc; padding-top: 1rem;">
+            <strong style="color: var(--vino); display: block; margin-bottom: 0.5rem;">Mensaje:</strong>
+            <p id="modalMsgContent" style="color: #4a3a43; line-height: 1.6; white-space: pre-wrap; word-break: break-word; font-size: 0.95rem;"></p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Tab Blog -->
@@ -134,10 +222,11 @@
 
   <script>
     const API_URL = 'https://bloomrise-api.vercel.app/api';
-    const PASSWORD = 'bloomadmin26';
+    const PASSWORD = 'bloomriseadmin2026';
     
     let currentPage = 1;
     let currentBlogPage = 1;
+    let loadedMessages = [];
 
     function checkPassword() {
       const input = document.getElementById('adminPassword').value;
@@ -168,6 +257,7 @@
           return;
         }
 
+        loadedMessages = data.data;
         const tbody = document.getElementById('messagesTableBody');
         tbody.innerHTML = '';
         
@@ -176,15 +266,21 @@
           const isCon = msg.status === 'contestado';
           const btnClass = isCon ? 'status-con' : 'status-sin';
           
+          let shortMsg = msg.message;
+          if(shortMsg.length > 40) shortMsg = shortMsg.substring(0, 40) + '...';
+          
           tbody.innerHTML += `
             <tr>
-              <td>${date}</td>
-              <td>${msg.email}</td>
-              <td style="max-width: 300px; word-wrap: break-word;">${msg.message}</td>
+              <td style="white-space: nowrap;">${date}</td>
+              <td style="max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${msg.email}</td>
+              <td style="max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${shortMsg}</td>
               <td>
                 <button class="status-badge ${btnClass}" onclick="toggleStatus('${msg._id}', '${msg.status}')">
                   ${msg.status.toUpperCase()}
                 </button>
+              </td>
+              <td>
+                <button class="status-badge" style="background:#e3f2fd; color:#1565c0;" onclick="viewMessageModal('${msg._id}')">Ver</button>
               </td>
             </tr>
           `;
@@ -200,6 +296,41 @@
         console.error(err);
         alert('Error al cargar mensajes');
       }
+    }
+
+    function viewMessageModal(id) {
+      const msg = loadedMessages.find(m => m._id === id);
+      if(!msg) return;
+
+      const date = new Date(msg.createdAt).toLocaleDateString('es-ES', { 
+        year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+      });
+      const isCon = msg.status === 'contestado';
+      const btnClass = isCon ? 'status-con' : 'status-sin';
+
+      document.getElementById('modalMsgEmail').innerText = msg.email;
+      document.getElementById('modalMsgDate').innerText = date;
+      document.getElementById('modalMsgContent').innerText = msg.message;
+      document.getElementById('modalMsgStatusContainer').innerHTML = `
+        <button class="status-badge ${btnClass}" onclick="toggleStatusFromModal('${msg._id}', '${msg.status}')">
+          ${msg.status.toUpperCase()}
+        </button>
+      `;
+
+      document.getElementById('messageModal').style.display = 'flex';
+      setTimeout(() => document.getElementById('messageModal').classList.add('active'), 10);
+    }
+
+    function closeMessageModal() {
+      const mod = document.getElementById('messageModal');
+      mod.classList.remove('active');
+      setTimeout(() => mod.style.display = 'none', 300);
+    }
+
+    async function toggleStatusFromModal(id, currentStatus) {
+      await toggleStatus(id, currentStatus);
+      const newStatus = currentStatus === 'sin contestar' ? 'contestado' : 'sin contestar';
+      viewMessageModal(id);
     }
 
     async function toggleStatus(id, currentStatus) {
