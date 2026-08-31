@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bloomrise – Panel de Administración</title>
+  <link rel="icon" href="./media/logo.png" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css" />
+  <style>
+    body { background: #f3e6ec; font-family: 'Poppins', sans-serif; }
+    .admin-container { max-width: 1200px; margin: 100px auto; padding: 2rem; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #F5DDE8; padding-bottom: 1rem; }
+    .tab-btn { background: none; border: none; font-size: 1.1rem; font-weight: 600; color: #a08496; cursor: pointer; padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.3s; }
+    .tab-btn.active { color: var(--vino); background: #F5DDE8; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    
+    /* Login Overlay */
+    #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f3e6ec; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+    .login-box { background: white; padding: 3rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; }
+    .login-box input { padding: 1rem; border: 1px solid var(--rosa-emp); border-radius: 100px; outline: none; margin-bottom: 1rem; width: 100%; }
+    .login-box button { background: var(--rosa-malva); color: white; border: none; padding: 1rem 2rem; border-radius: 100px; cursor: pointer; font-weight: 600; width: 100%; }
+    
+    /* Tables & Lists */
+    table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+    th, td { text-align: left; padding: 1rem; border-bottom: 1px solid #eee; }
+    th { color: var(--rosa-malva); font-family: 'Playfair Display', serif; }
+    .status-badge { padding: 0.3rem 0.8rem; border-radius: 100px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; }
+    .status-sin { background: #ffebee; color: #c62828; }
+    .status-con { background: #e8f5e9; color: #2e7d32; }
+    
+    .pagination { display: flex; gap: 0.5rem; justify-content: center; }
+    .pagination button { border: 1px solid var(--rosa-emp); background: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
+    
+    /* Blog Form */
+    .blog-form { display: flex; flex-direction: column; gap: 1rem; }
+    .blog-form input, .blog-form textarea { padding: 1rem; border: 1px solid var(--rosa-emp); border-radius: 16px; outline: none; font-family: inherit; }
+    .blog-form textarea { min-height: 200px; resize: vertical; }
+    .blog-form button { background: var(--rosa-malva); color: white; border: none; padding: 1rem 2rem; border-radius: 100px; cursor: pointer; font-weight: 600; align-self: flex-start; }
+  </style>
+</head>
+<body>
+
+  <!-- Overlay de Login -->
+  <div id="loginOverlay">
+    <div class="login-box">
+      <h2 style="font-family: 'Playfair Display'; color: var(--rosa-malva); margin-bottom: 1.5rem;">Acceso Admin</h2>
+      <input type="password" id="adminPassword" placeholder="Contraseña..." />
+      <button onclick="checkPassword()">Ingresar</button>
+      <p id="loginError" style="color: red; display: none; margin-top: 1rem;">Contraseña incorrecta</p>
+    </div>
+  </div>
+
+  <div class="admin-container">
+    <h1 style="font-family: 'Playfair Display'; color: var(--vino); margin-bottom: 2rem;">Panel de Control</h1>
+    
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('messages')">Mensajes Recibidos</button>
+      <button class="tab-btn" onclick="switchTab('blog')">Gestión de Blog</button>
+    </div>
+
+    <!-- Tab Mensajes -->
+    <div id="tab-messages" class="tab-content active">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Email</th>
+            <th>Mensaje</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="messagesTableBody">
+          <!-- Dinámico -->
+        </tbody>
+      </table>
+      <div class="pagination" id="messagesPagination"></div>
+    </div>
+
+    <!-- Tab Blog -->
+    <div id="tab-blog" class="tab-content">
+      <div class="blog-form">
+        <h3 style="color: var(--vino)">Redactar Entrada del Blog</h3>
+        <label>Fecha (Selecciona el día que aparecerá en el calendario):</label>
+        <input type="date" id="blogDate" required />
+        <label>Contenido (Soporta HTML):</label>
+        <textarea id="blogContent" placeholder="Escribe aquí el contenido del blog..."></textarea>
+        <button onclick="saveBlogPost()">Guardar Entrada</button>
+        <p id="blogFeedback" style="color: var(--rosa-malva); font-weight: bold;"></p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:3000/api';
+    const PASSWORD = 'bloomriseadmin2026'; // Contraseña quemada
+    
+    let currentPage = 1;
+
+    function checkPassword() {
+      const input = document.getElementById('adminPassword').value;
+      if(input === PASSWORD) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        fetchMessages();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+    }
+
+    async function fetchMessages(page = 1) {
+      currentPage = page;
+      try {
+        const res = await fetch(`${API_URL}/messages?page=${page}&limit=10`);
+        const data = await res.json();
+        
+        const tbody = document.getElementById('messagesTableBody');
+        tbody.innerHTML = '';
+        
+        data.data.forEach(msg => {
+          const date = new Date(msg.createdAt).toLocaleDateString('es-ES');
+          const isCon = msg.status === 'contestado';
+          const btnClass = isCon ? 'status-con' : 'status-sin';
+          
+          tbody.innerHTML += `
+            <tr>
+              <td>${date}</td>
+              <td>${msg.email}</td>
+              <td style="max-width: 300px; word-wrap: break-word;">${msg.message}</td>
+              <td>
+                <button class="status-badge ${btnClass}" onclick="toggleStatus('${msg._id}', '${msg.status}')">
+                  ${msg.status.toUpperCase()}
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        const pag = document.getElementById('messagesPagination');
+        pag.innerHTML = '';
+        for(let i = 1; i <= data.totalPages; i++) {
+          pag.innerHTML += `<button onclick="fetchMessages(${i})" style="${i===currentPage ? 'background:var(--rosa-claro)' : ''}">${i}</button>`;
+        }
+
+      } catch (err) {
+        console.error(err);
+        alert('Error al cargar mensajes');
+      }
+    }
+
+    async function toggleStatus(id, currentStatus) {
+      const newStatus = currentStatus === 'sin contestar' ? 'contestado' : 'sin contestar';
+      try {
+        await fetch(`${API_URL}/messages/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus })
+        });
+        fetchMessages(currentPage);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function saveBlogPost() {
+      const date = document.getElementById('blogDate').value;
+      const content = document.getElementById('blogContent').value;
+      
+      if(!date || !content) {
+        alert("Por favor completa la fecha y el contenido.");
+        return;
+      }
+      
+      try {
+        const res = await fetch(`${API_URL}/blog`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ date, content })
+        });
+        const data = await res.json();
+        if(data.success) {
+          document.getElementById('blogFeedback').innerText = "¡Entrada guardada exitosamente!";
+          setTimeout(() => document.getElementById('blogFeedback').innerText = '', 3000);
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error al guardar la entrada.");
+      }
+    }
+
+    // Load existing post if date is selected
+    document.getElementById('blogDate').addEventListener('change', async (e) => {
+      const date = e.target.value;
+      try {
+        const res = await fetch(`${API_URL}/blog/${date}`);
+        const data = await res.json();
+        if(data.success && data.data) {
+          document.getElementById('blogContent').value = data.data.content;
+        } else {
+          document.getElementById('blogContent').value = '';
+        }
+      } catch(err) {
+        console.error(err);
+      }
+    });
+
+  </script>
+</body>
+</html>

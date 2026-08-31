@@ -410,13 +410,18 @@
       <p style="color:rgba(58,32,48,0.8); line-height: 1.6;">¿Tienes alguna pregunta sobre la depresión postparto?<br>
       ¿Te gustaría compartir tu experiencia o algún consejo que pueda ayudar a otras madres?<br>
       Puedes dejar tu mensaje aquí. Nuestro objetivo es crear un espacio seguro de información, apoyo y acompañamiento.</p>
-      <form class="questions-form" id="questionForm">
-        <input type="text" id="questionInput" class="questions-input" placeholder="Escribe tu mensaje aquí..." required />
-        <button type="submit" class="questions-btn">Enviar</button>
+      <form class="questions-form" id="questionForm" style="flex-direction: column;">
+        <input type="email" id="emailInput" class="questions-input" placeholder="Tu correo electrónico" required />
+        <div style="display: flex; gap: 1rem; width: 100%;">
+          <input type="text" id="questionInput" class="questions-input" placeholder="Escribe tu mensaje aquí..." required />
+          <button type="submit" class="questions-btn">Enviar</button>
+        </div>
+        <p id="formFeedback" style="display: none; margin-top: 10px; font-weight: 600; color: var(--rosa-malva);"></p>
       </form>
     </div>
 
   </main>
+
 
   <footer>
     <div class="footer-inner">
@@ -476,22 +481,59 @@
     navbar.classList.toggle('scrolled', scroll > 30);
   });
 
-  gsap.utils.toArray('.fade-up').forEach((el, i) => {
-    gsap.fromTo(el,
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1, y: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
+    gsap.utils.toArray('.fade-up').forEach((el, i) => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          }
         }
-      }
-    );
-  });
+      );
+    });
 
-</script>
+    const API_URL = 'http://localhost:3000/api';
+    document.getElementById('questionForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('emailInput').value;
+      const message = document.getElementById('questionInput').value;
+      const btn = e.target.querySelector('button');
+      const feedback = document.getElementById('formFeedback');
+      
+      btn.disabled = true;
+      btn.innerText = 'Enviando...';
+      
+      try {
+        const res = await fetch(`${API_URL}/messages`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, message })
+        });
+        const data = await res.json();
+        if(data.success) {
+          feedback.innerText = '¡Mensaje enviado con éxito!';
+          feedback.style.display = 'block';
+          e.target.reset();
+        } else {
+          feedback.innerText = 'Hubo un error al enviar. Intenta de nuevo.';
+          feedback.style.display = 'block';
+        }
+      } catch (err) {
+        console.error(err);
+        feedback.innerText = 'Error de conexión. Asegúrate de que el backend está corriendo.';
+        feedback.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Enviar';
+        setTimeout(() => feedback.style.display = 'none', 5000);
+      }
+    });
+
+  </script>
 </body>
 </html>

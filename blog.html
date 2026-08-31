@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Bloomrise – Test de Edimburgo</title>
+    <title>Bloomrise – Blog</title>
     <link rel="icon" href="./media/logo.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,9 +13,89 @@
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
     <link rel="stylesheet" href="./css/style.css" />
     <style>
+        .page-header { padding: 120px 1.5rem 2rem; max-width: 1000px; margin: 0 auto; text-align: center; }
+        .page-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--blanco); border: 1px solid var(--rosa-emp); border-radius: 100px; padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--vino); font-weight: 500; margin-bottom: 1.5rem; }
+        .page-eyebrow::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--rosa-malva); }
+        .section-title { font-family: 'Playfair Display', serif; color: var(--rosa-malva); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; }
+        
+        .blog-main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
 
+        /* Calendar UI */
+        .calendar-container { background: #fffafb; border-radius: 24px; padding: 2rem; width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .cal-btn { background: #F5DDE8; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--rosa-malva); transition: 0.3s; }
+        .cal-btn:hover { background: var(--rosa-malva); color: white; }
+        .cal-month { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--rosa-malva); margin: 0; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.8rem; text-align: center; }
+        .cal-day-name { font-size: 0.8rem; font-weight: 600; color: #a08496; margin-bottom: 0.5rem; }
+        .cal-date { width: 38px; height: 38px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; position: relative; font-weight: 500; color: var(--vino); transition: 0.3s; }
+        .cal-date:hover { background: #fbeaf1; }
+        .cal-date.active { background: #ffe4ef; color: var(--rosa-malva); border: 2px solid var(--rosa-malva); }
+        .has-post::after { content: ''; width: 6px; height: 6px; background: var(--rosa-malva); border-radius: 50%; position: absolute; bottom: 2px; }
 
+        /* Blog Post Display */
+        .blog-post-display { width: 100%; padding: 2rem; background: white; border-radius: 24px; display: none; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        .blog-post-display h2 { font-family: 'Playfair Display', serif; color: var(--vino); margin-bottom: 1rem; }
+        .blog-content { line-height: 1.8; color: #4a3a43; }
 
+        /* Forum UI */
+        .forum-container { width: 100%; }
+        .forum-post-card { background: white; border-radius: 20px; padding: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .forum-post-card:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.05); }
+        .forum-icon { width: 50px; height: 50px; background: #ffe4ef; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--rosa-malva); flex-shrink: 0; }
+        .forum-content { flex: 1; }
+        .forum-author { font-weight: 600; color: var(--vino); font-size: 0.9rem; }
+        .forum-snippet { color: #a08496; font-size: 0.9rem; margin-top: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+        .forum-arrow { color: #ffb1c8; background: #fff5f8; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
+
+        .new-post-box { background: white; border-radius: 20px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; border: 2px solid #F5DDE8; }
+        .new-post-box input { flex: 1; border: none; outline: none; font-family: inherit; font-size: 0.95rem; }
+        
+        .pagination { display: flex; gap: 0.5rem; justify-content: center; margin-top: 2rem; }
+        .pagination button { border: 1px solid var(--rosa-emp); background: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
+
+        /* Modal UI */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: #f3e6ec; width: 90%; max-width: 600px; border-radius: 24px; padding: 2rem; max-height: 80vh; overflow-y: auto; position: relative; }
+        .close-modal { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--vino); }
+        .thread-main-post { background: white; padding: 1.5rem; border-radius: 20px; margin-bottom: 1.5rem; }
+        .thread-author { font-weight: bold; color: var(--vino); display: flex; align-items: center; gap: 0.5rem; }
+        .thread-author::before { content: ''; width: 30px; height: 30px; background: #ddd; border-radius: 50%; display: inline-block; }
+        .thread-date { font-size: 0.8rem; color: #a08496; font-weight: normal; margin-left: auto; }
+        .thread-text { margin-top: 1rem; color: #4a3a43; line-height: 1.5; }
+        
+        .comment-item { background: white; padding: 1rem; border-radius: 16px; margin-bottom: 0.5rem; margin-left: 2rem; border-left: 3px solid #ffb1c8; }
+        
+        .comment-box { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .comment-box input, .comment-box textarea { padding: 1rem; border: 1px solid var(--rosa-emp); border-radius: 12px; outline: none; font-family: inherit; }
+        .comment-box button { background: var(--rosa-malva); color: white; border: none; padding: 0.8rem; border-radius: 100px; cursor: pointer; font-weight: 600; }
+
+        .forum-submit-btn { background: var(--rosa-malva); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 100px; font-weight: 600; cursor: pointer; transition: 0.3s; white-space: nowrap; }
+        .forum-submit-btn:hover { opacity: 0.8; }
+
+        @media (max-width: 768px) {
+            .page-header { padding: 100px 1rem 1.5rem; }
+            .blog-main-container { padding: 0 1rem 3rem; gap: 2rem; }
+            .calendar-container { padding: 1.5rem 0.75rem; }
+            .cal-grid { gap: 0.35rem; }
+            .cal-date { width: 32px; height: 32px; font-size: 0.85rem; }
+            .cal-day-name { font-size: 0.7rem; }
+            .cal-month { font-size: 1.4rem; }
+            .cal-btn { width: 32px; height: 32px; }
+            .new-post-box { flex-direction: column; align-items: stretch; padding: 1.25rem 1rem; }
+            .new-post-box svg { display: none; }
+            #newForumAuthor { border-left: none !important; padding-left: 0 !important; border-top: 1px solid #eee; padding-top: 0.8rem; margin-top: 0.2rem; }
+            .modal-content { width: 95%; padding: 1.5rem 1rem; }
+            .comment-item { margin-left: 0.8rem; }
+        }
     </style>
 </head>
 <body style="background: #f3e6ec;">
@@ -26,7 +106,7 @@
         <li><a href="./index.html">Inicio</a></li>
         <li><a href="./informativa.html">Información</a></li>
         <li><a href="./meditacion.html">Meditacion</a></li>
-        <li><a href="./test.html" >Test de Edimburgo</a></li>
+        <li><a href="./test.html">Test de Edimburgo</a></li>
         <li><a href="./blog.html" class="active">Blog</a></li>
     </ul>
     <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
@@ -43,32 +123,102 @@
 <div id="smooth-wrapper">
 <div id="smooth-content">
 
-    <div class="content-container" style="text-align: center; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <p>🚧 Blog aun en desarrollo</p>
+    <div class="page-header">
+        <div class="page-eyebrow">Sección: Blog</div>
     </div>
+
+    <main class="blog-main-container">
+        <!-- CALENDAR -->
+        <div class="calendar-container fade-up">
+            <h2 class="section-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Calendario
+            </h2>
+            <div class="calendar-header">
+                <button class="cal-btn" onclick="changeMonth(-1)">❮</button>
+                <h3 class="cal-month" id="monthName">Mes</h3>
+                <button class="cal-btn" onclick="changeMonth(1)">❯</button>
+            </div>
+            <div class="cal-grid" id="calDays">
+                <!-- Días renderizados vía JS -->
+            </div>
+        </div>
+
+        <!-- BLOG POST DISPLAY -->
+        <div class="blog-post-display fade-up" id="blogPostDisplay">
+            <h2 id="blogDisplayDate"></h2>
+            <div class="blog-content" id="blogDisplayContent"></div>
+        </div>
+
+        <!-- FORUM -->
+        <div class="forum-container fade-up">
+            <h2 class="section-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                Entradas Destacadas
+            </h2>
+            
+            <form class="new-post-box" id="newForumForm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--rosa-malva)" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                <input type="text" id="newForumContent" placeholder="Comparte tu experiencia, deja un consejo o apoyo..." required />
+                <input type="text" id="newForumAuthor" placeholder="Tu nombre (opcional)" style="flex: 0.5; border-left: 1px solid #eee; padding-left: 1rem;" />
+                <button type="submit" class="forum-submit-btn">Publicar</button>
+            </form>
+
+            <div id="forumList">
+                <!-- Entradas dinámicas -->
+            </div>
+            <div class="pagination" id="forumPagination"></div>
+        </div>
+    </main>
 
     <footer>
         <div class="footer-inner">
-        <div class="footer-logo">Bloomrise</div>
-        <p class="footer-tagline">Acompañándote con información, apoyo y comprensión en cada etapa.</p>
-        <div class="footer-links">
-            <a href="./index.html">Inicio</a>
-            <a href="./informativa.html">Información</a>
-            <a href="./meditacion.html">Meditacion</a>
-            <a href="./test.html">Test de Edimburgo</a>
-            <a href="./blog.html">Blog</a>
-        </div>
-        <div class="footer-divider"></div>
-        <p class="footer-copy">© 2026 Bloomrise · Este sitio tiene fines informativos y no reemplaza la atención médica profesional.</p>
+            <div class="footer-logo">Bloomrise</div>
+            <p class="footer-tagline">Acompañándote con información, apoyo y comprensión en cada etapa.</p>
+            <div class="footer-links">
+                <a href="./index.html">Inicio</a>
+                <a href="./informativa.html">Información</a>
+                <a href="./meditacion.html">Meditacion</a>
+                <a href="./test.html">Test de Edimburgo</a>
+                <a href="./blog.html">Blog</a>
+            </div>
+            <div class="footer-divider"></div>
+            <p class="footer-copy">© 2026 Bloomrise · Este sitio tiene fines informativos y no reemplaza la atención médica profesional.</p>
         </div>
     </footer>
 
 </div>
 </div>
 
+<!-- Modal Hilo Foro -->
+<div class="modal-overlay" id="forumModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeForumModal()">✕</button>
+        
+        <div class="thread-main-post">
+            <div class="thread-author" id="modalAuthor">Nombre <span class="thread-date" id="modalDate"></span></div>
+            <div class="thread-text" id="modalContent"></div>
+        </div>
+        
+        <h4 style="color: var(--vino); margin-bottom: 1rem;">Comentarios</h4>
+        <div id="modalComments">
+            <!-- Comentarios dinámicos -->
+        </div>
+
+        <form class="comment-box" id="newCommentForm">
+            <input type="text" id="commentAuthor" placeholder="Tu nombre (opcional)" />
+            <textarea id="commentContent" placeholder="Escribe tu comentario..." rows="2" required></textarea>
+            <button type="submit">Comentar</button>
+        </form>
+    </div>
+</div>
+
 
 <script>
-    /* ──── MENU ──── */
+    /* ──── CONFIG ──── */
+    const API_URL = 'http://localhost:3000/api';
+
+    /* ──── MENU & ANIMATIONS ──── */
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
     hamburger.addEventListener('click', () => {
@@ -76,79 +226,205 @@
         mobileMenu.classList.toggle('open');
     });
 
-    /* ─── LENIS & GSAP ──── */
-    const lenis = new Lenis({ 
-        duration: 1.8, 
-        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-        smoothTouch: true,
-        touchMultiplier: 2
-    });
+    const lenis = new Lenis({ duration: 1.8, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothTouch: true });
     gsap.registerPlugin(ScrollTrigger);
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
     lenis.on('scroll', ({ scroll, limit }) => { document.getElementById('progress-bar').style.width = (scroll / limit * 100) + '%'; });
-    
     const navbar = document.getElementById('navbar');
     lenis.on('scroll', ({ scroll }) => { navbar.classList.toggle('scrolled', scroll > 30); });
-    
-    gsap.utils.toArray('.fade-up').forEach((el, i) => {
+
+    gsap.utils.toArray('.fade-up').forEach((el) => {
         gsap.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } });
     });
 
-    /* ──── TEST LOGIC ──── */
-    function startTest() {
-        document.getElementById('startBanner').style.display = 'none';
-        document.getElementById('interactiveTest').style.display = 'block';
-        setTimeout(() => {
-        window.scrollTo({ top: document.getElementById('interactiveTest').offsetTop - 100, behavior: 'smooth' });
-        }, 100);
+    /* ──── CALENDAR LOGIC ──── */
+    let currentDate = new Date(); // Start with current month
+    let blogDates = [];
+
+    async function loadBlogDates() {
+        try {
+            const res = await fetch(`${API_URL}/blog-dates`);
+            const data = await res.json();
+            if(data.success) blogDates = data.data; // array de "YYYY-MM-DD"
+        } catch(e) { console.error(e); }
     }
 
-    function calculateScore() {
-        const form = document.getElementById('epdsForm');
-        const formData = new FormData(form);
-        let totalScore = 0;
-        let answered = 0;
-
-        for (let i = 1; i <= 10; i++) {
-        if (formData.has('q' + i)) {
-            totalScore += parseInt(formData.get('q' + i));
-            answered++;
-        }
-        }
-
-        if (answered < 10) {
-        showCustomAlert();
-        return;
-        }
-
-        document.getElementById('interactiveTest').style.display = 'none';
-        document.getElementById('resultUI').style.display = 'block';
-        document.getElementById('scoreNumber').innerText = totalScore;
-
-        let resultText = '';
-        if (totalScore >= 0 && totalScore <= 9) {
-        resultText = "Tus respuestas no muestran señales significativas de depresión posparto en este momento. Sin embargo, es importante seguir prestando atención a tu bienestar. Si notas cambios en tu estado de ánimo no dudes en buscar apoyo.";
-        } else if (totalScore >= 10 && totalScore <= 12) {
-        resultText = "Tus respuestas sugieren la presencia de algunas señales que podrían estar afectando tu bienestar emocional. Se recomienda repetir el test dentro de unas semanas. Si los síntomas persisten o aumentan, considera buscar orientación profesional.";
-        } else {
-        resultText = "Tus respuestas indican la presencia de varias señales asociadas a la depresión posparto. Se recomienda buscar a un profesional de la salud para recibir una valoración más completa y el apoyo adecuado.";
-        }
+    function renderCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
         
-        document.getElementById('resultText').innerText = resultText;
-        
-        setTimeout(() => {
-        window.scrollTo({ top: document.getElementById('resultUI').offsetTop - 100, behavior: 'smooth' });
-        }, 100);
+        const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        document.getElementById('monthName').innerText = monthNames[month];
+
+        let html = `
+            <div class="cal-day-name">DOM</div><div class="cal-day-name">LUN</div><div class="cal-day-name">MAR</div>
+            <div class="cal-day-name">MIÉ</div><div class="cal-day-name">JUE</div><div class="cal-day-name">VIE</div><div class="cal-day-name">SÁB</div>
+        `;
+
+        for(let i = 0; i < firstDay; i++) {
+            html += `<div></div>`;
+        }
+
+        for(let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${year}-${String(month+1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const hasPost = blogDates.includes(dateStr) ? 'has-post' : '';
+            html += `<div class="cal-date ${hasPost}" onclick="selectDate('${dateStr}', this)">${day}</div>`;
+        }
+
+        document.getElementById('calDays').innerHTML = html;
     }
 
-    function showCustomAlert() {
-        document.getElementById('customAlertModal').classList.add('active');
+    function changeMonth(dir) {
+        currentDate.setMonth(currentDate.getMonth() + dir);
+        renderCalendar();
     }
-    function closeCustomAlert() {
-        document.getElementById('customAlertModal').classList.remove('active');
+
+    async function selectDate(dateStr, element) {
+        document.querySelectorAll('.cal-date').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+
+        try {
+            const res = await fetch(`${API_URL}/blog/${dateStr}`);
+            const data = await res.json();
+            const display = document.getElementById('blogPostDisplay');
+            if(data.success && data.data) {
+                document.getElementById('blogDisplayDate').innerText = `Entrada del ${dateStr}`;
+                document.getElementById('blogDisplayContent').innerHTML = data.data.content;
+                display.style.display = 'block';
+                lenis.scrollTo(display, { offset: -100 });
+            } else {
+                display.style.display = 'none';
+                alert("No hay entrada de blog para este día.");
+            }
+        } catch(e) { console.error(e); }
     }
+
+    /* ──── FORUM LOGIC ──── */
+    let currentForumPage = 1;
+    let currentThreadId = null;
+
+    async function loadForum(page = 1) {
+        currentForumPage = page;
+        try {
+            const res = await fetch(`${API_URL}/forum?page=${page}&limit=5`);
+            const data = await res.json();
+            
+            let html = '';
+            data.data.forEach(post => {
+                html += `
+                    <div class="forum-post-card" onclick="openForumModal('${post._id}')">
+                        <div class="forum-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        </div>
+                        <div class="forum-content">
+                            <div class="forum-author">${post.author}</div>
+                            <div class="forum-snippet">${post.content}</div>
+                        </div>
+                        <div class="forum-arrow">➔</div>
+                    </div>
+                `;
+            });
+            document.getElementById('forumList').innerHTML = html;
+
+            const pag = document.getElementById('forumPagination');
+            pag.innerHTML = '';
+            for(let i = 1; i <= data.totalPages; i++) {
+                pag.innerHTML += `<button onclick="loadForum(${i})" style="${i===currentForumPage ? 'background:var(--rosa-claro)' : ''}">${i}</button>`;
+            }
+        } catch(e) { console.error(e); }
+    }
+
+    document.getElementById('newForumForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const content = document.getElementById('newForumContent').value;
+        const author = document.getElementById('newForumAuthor').value;
+        try {
+            await fetch(`${API_URL}/forum`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ author, content })
+            });
+            e.target.reset();
+            loadForum(1);
+        } catch(e) { console.error(e); }
+    });
+
+    /* ──── MODAL LOGIC ──── */
+    function timeSince(date) {
+        const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+        let interval = seconds / 31536000;
+        if (interval > 1) return Math.floor(interval) + " años";
+        interval = seconds / 2592000;
+        if (interval > 1) return Math.floor(interval) + " meses";
+        interval = seconds / 86400;
+        if (interval > 1) return Math.floor(interval) + " días";
+        interval = seconds / 3600;
+        if (interval > 1) return Math.floor(interval) + " horas";
+        interval = seconds / 60;
+        if (interval > 1) return Math.floor(interval) + " minutos";
+        return "Hace momentos";
+    }
+
+    async function openForumModal(id) {
+        currentThreadId = id;
+        try {
+            const res = await fetch(`${API_URL}/forum/${id}`);
+            const data = await res.json();
+            if(data.success) {
+                const post = data.data;
+                document.getElementById('modalAuthor').innerHTML = `${post.author} <span class="thread-date">Hace ${timeSince(post.createdAt)}</span>`;
+                document.getElementById('modalContent').innerText = post.content;
+                
+                let commentsHtml = '';
+                post.comments.forEach(c => {
+                    commentsHtml += `
+                        <div class="comment-item">
+                            <strong style="color:var(--vino); font-size:0.9rem;">${c.author}</strong> <span style="font-size:0.75rem; color:#a08496;"> Hace ${timeSince(c.createdAt)}</span>
+                            <div style="margin-top:0.5rem; color:#4a3a43; font-size:0.95rem;">${c.content}</div>
+                        </div>
+                    `;
+                });
+                document.getElementById('modalComments').innerHTML = commentsHtml || '<p style="color:#a08496; font-size:0.9rem;">No hay comentarios aún. Sé el primero.</p>';
+                
+                document.getElementById('forumModal').classList.add('active');
+            }
+        } catch(e) { console.error(e); }
+    }
+
+    function closeForumModal() {
+        document.getElementById('forumModal').classList.remove('active');
+        currentThreadId = null;
+    }
+
+    document.getElementById('newCommentForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if(!currentThreadId) return;
+        const author = document.getElementById('commentAuthor').value;
+        const content = document.getElementById('commentContent').value;
+        try {
+            await fetch(`${API_URL}/forum/${currentThreadId}/comments`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ author, content })
+            });
+            e.target.reset();
+            openForumModal(currentThreadId); // recargar
+        } catch(e) { console.error(e); }
+    });
+
+
+    /* ──── INIT ──── */
+    async function init() {
+        await loadBlogDates();
+        renderCalendar();
+        loadForum(1);
+    }
+    init();
+
 </script>
 </body>
 </html>
