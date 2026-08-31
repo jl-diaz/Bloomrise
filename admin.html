@@ -202,6 +202,19 @@
       </div>
     </div>
 
+    <!-- Modal Confirmar Eliminación -->
+    <div id="confirmDeleteModal" class="modal-overlay" onclick="if(event.target === this) closeDeleteModal()">
+      <div class="modal-content" style="max-width: 420px; text-align: center; padding: 2.2rem 1.5rem; border-radius: 24px;">
+        <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">🗑️</div>
+        <h3 style="color: var(--vino); font-family: 'Playfair Display', serif; margin-bottom: 0.5rem; font-size: 1.3rem;">¿Eliminar esta entrada?</h3>
+        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Esta acción no se puede deshacer y se borrará permanentemente del blog.</p>
+        <div style="display: flex; gap: 0.8rem; justify-content: center;">
+          <button onclick="closeDeleteModal()" style="background: #f0e6eb; color: var(--vino); border: none; padding: 0.6rem 1.4rem; border-radius: 100px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">Cancelar</button>
+          <button id="btnConfirmDelete" style="background: #e53935; color: white; border: none; padding: 0.6rem 1.4rem; border-radius: 100px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">Sí, eliminar</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Tab Blog -->
     <div id="tab-blog" class="tab-content">
       <div class="blog-form">
@@ -418,11 +431,13 @@
           
           tbody.innerHTML += `
             <tr>
-              <td>${post.date}</td>
+              <td style="white-space: nowrap;">${post.date}</td>
               <td>${shortContent}</td>
-              <td>
-                <button class="status-badge" style="background:#e3f2fd; color:#1565c0;" onclick="editBlogPost('${post.date}')">Editar</button>
-                <button class="status-badge status-sin" onclick="deleteBlogPost('${post._id}')">Eliminar</button>
+              <td style="white-space: nowrap;">
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                  <button class="status-badge" style="background:#e3f2fd; color:#1565c0;" onclick="editBlogPost('${post.date}')">Editar</button>
+                  <button class="status-badge status-sin" onclick="confirmDeleteBlog('${post._id}')">Eliminar</button>
+                </div>
               </td>
             </tr>
           `;
@@ -438,14 +453,29 @@
       }
     }
 
-    async function deleteBlogPost(id) {
-      if(!confirm("¿Estás seguro de eliminar esta entrada?")) return;
-      try {
-        await fetch(`${API_URL}/blog/${id}`, { method: 'DELETE' });
-        fetchBlogPosts(currentBlogPage);
-      } catch(err) {
-        console.error(err);
-      }
+    let blogToDeleteId = null;
+
+    function confirmDeleteBlog(id) {
+      blogToDeleteId = id;
+      const btn = document.getElementById('btnConfirmDelete');
+      btn.onclick = async () => {
+        try {
+          await fetch(`${API_URL}/blog/${blogToDeleteId}`, { method: 'DELETE' });
+          closeDeleteModal();
+          fetchBlogPosts(currentBlogPage);
+        } catch(err) {
+          console.error(err);
+        }
+      };
+      document.getElementById('confirmDeleteModal').style.display = 'flex';
+      setTimeout(() => document.getElementById('confirmDeleteModal').classList.add('active'), 10);
+    }
+
+    function closeDeleteModal() {
+      const mod = document.getElementById('confirmDeleteModal');
+      mod.classList.remove('active');
+      setTimeout(() => mod.style.display = 'none', 300);
+      blogToDeleteId = null;
     }
 
     function editBlogPost(date) {
