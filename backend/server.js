@@ -10,14 +10,34 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// --- DB Connection ---
-if (!process.env.MONGODB_URI) {
-  console.warn("WARNING: MONGODB_URI no está definido en el archivo .env");
-} else {
-  mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Conectado a MongoDB Atlas'))
-    .catch(err => console.error('Error conectando a MongoDB:', err));
-}
+// --- DB Connection (Serverless Friendly) ---
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected) return;
+  if (!process.env.MONGODB_URI) {
+    console.error("WARNING: MONGODB_URI no está definido.");
+    throw new Error("MONGODB_URI no está definido");
+  }
+  try {
+    const db = await mongoose.connect(process.env.MONGODB_URI);
+    isConnected = db.connections[0].readyState;
+    console.log('Conectado a MongoDB Atlas');
+  } catch (error) {
+    console.error('Error conectando a MongoDB:', error);
+    throw error;
+  }
+};
+
+// Middleware para asegurar conexión antes de cada ruta
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Error de conexión a la base de datos' });
+  }
+});
 
 // --- Rutas de Mensajes ---
 app.post('/api/messages', async (req, res) => {
