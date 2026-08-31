@@ -62,21 +62,134 @@
         .pagination button { border: 1px solid var(--rosa-emp); background: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
 
         /* Modal UI */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(43, 16, 30, 0.6); 
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 9999; 
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 1rem;
+            box-sizing: border-box;
+        }
         .modal-overlay.active { display: flex; }
-        .modal-content { background: #f3e6ec; width: 90%; max-width: 600px; border-radius: 24px; padding: 2rem; max-height: 80vh; overflow-y: auto; position: relative; }
-        .close-modal { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--vino); }
-        .thread-main-post { background: white; padding: 1.5rem; border-radius: 20px; margin-bottom: 1.5rem; }
-        .thread-author { font-weight: bold; color: var(--vino); display: flex; align-items: center; gap: 0.5rem; }
-        .thread-author::before { content: ''; width: 30px; height: 30px; background: #ddd; border-radius: 50%; display: inline-block; }
+        .modal-content { 
+            background: #fdf7f9; 
+            width: 100%; 
+            max-width: 580px; 
+            border-radius: 24px; 
+            padding: 1.5rem; 
+            max-height: 85vh; 
+            overflow-y: auto; 
+            position: relative; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            box-sizing: border-box;
+            -webkit-overflow-scrolling: touch;
+        }
+        .modal-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+        .modal-header-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--vino);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .close-modal-btn { 
+            background: white; 
+            border: 1px solid #f0d0dc; 
+            width: 36px; 
+            height: 36px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            color: var(--vino); 
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+        }
+        .close-modal-btn:hover {
+            background: var(--rosa-emp);
+            color: var(--vino);
+            transform: scale(1.05);
+        }
+        
+        .thread-main-post { 
+            background: white; 
+            padding: 1.25rem; 
+            border-radius: 18px; 
+            margin-bottom: 1.5rem; 
+            border: 1px solid #f7e2eb;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .thread-author { font-weight: 600; color: var(--vino); display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+        .thread-author::before { content: '💬'; font-size: 1.1rem; display: inline-block; }
         .thread-date { font-size: 0.8rem; color: #a08496; font-weight: normal; margin-left: auto; }
-        .thread-text { margin-top: 1rem; color: #4a3a43; line-height: 1.5; }
+        .thread-text { margin-top: 0.8rem; color: #4a3a43; line-height: 1.5; font-size: 0.95rem; word-break: break-word; }
         
-        .comment-item { background: white; padding: 1rem; border-radius: 16px; margin-bottom: 0.5rem; margin-left: 2rem; border-left: 3px solid #ffb1c8; }
+        .comment-item { 
+            background: white; 
+            padding: 1rem; 
+            border-radius: 16px; 
+            margin-bottom: 0.75rem; 
+            margin-left: 1rem; 
+            border-left: 3px solid var(--rosa-malva); 
+            border-top: 1px solid #f9ebf1;
+            border-right: 1px solid #f9ebf1;
+            border-bottom: 1px solid #f9ebf1;
+            box-sizing: border-box;
+            word-break: break-word;
+        }
         
-        .comment-box { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
-        .comment-box input, .comment-box textarea { padding: 1rem; border: 1px solid var(--rosa-emp); border-radius: 12px; outline: none; font-family: inherit; }
-        .comment-box button { background: var(--rosa-malva); color: white; border: none; padding: 0.8rem; border-radius: 100px; cursor: pointer; font-weight: 600; }
+        .comment-box { 
+            margin-top: 1.5rem; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.6rem; 
+            background: #faedf2;
+            padding: 1rem;
+            border-radius: 18px;
+        }
+        .comment-box input, .comment-box textarea { 
+            padding: 0.8rem 1rem; 
+            border: 1px solid #eecbd8; 
+            border-radius: 12px; 
+            outline: none; 
+            font-family: inherit; 
+            background: white;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .comment-box textarea { resize: vertical; min-height: 70px; }
+        .comment-box button { 
+            background: var(--rosa-malva); 
+            color: white; 
+            border: none; 
+            padding: 0.8rem 1.5rem; 
+            border-radius: 100px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            align-self: flex-end;
+        }
+        .comment-box button:hover {
+            background: var(--vino);
+        }
 
         .forum-submit-btn { background: var(--rosa-malva); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 100px; font-weight: 600; cursor: pointer; transition: 0.3s; white-space: nowrap; }
         .forum-submit-btn:hover { opacity: 0.8; }
@@ -93,8 +206,9 @@
             .new-post-box { flex-direction: column; align-items: stretch; padding: 1.25rem 1rem; }
             .new-post-box svg { display: none; }
             #newForumAuthor { border-left: none !important; padding-left: 0 !important; border-top: 1px solid #eee; padding-top: 0.8rem; margin-top: 0.2rem; }
-            .modal-content { width: 95%; padding: 1.5rem 1rem; }
-            .comment-item { margin-left: 0.8rem; }
+            .modal-content { width: 100%; padding: 1.2rem 1rem; max-height: 90vh; border-radius: 20px; }
+            .comment-item { margin-left: 0.4rem; }
+            .comment-box button { width: 100%; }
         }
     </style>
 </head>
@@ -191,36 +305,38 @@
 </div>
 
 <!-- Modal Hilo Foro -->
-<div class="modal-overlay" id="forumModal">
+<div class="modal-overlay" id="forumModal" onclick="if(event.target === this) closeForumModal()">
     <div class="modal-content">
-        <button class="close-modal" onclick="closeForumModal()">✕</button>
+        <div class="modal-header-bar">
+            <h3 class="modal-header-title">Conversación en el Foro</h3>
+            <button class="close-modal-btn" onclick="closeForumModal()" title="Cerrar">✕</button>
+        </div>
         
         <div class="thread-main-post">
             <div class="thread-author" id="modalAuthor">Nombre <span class="thread-date" id="modalDate"></span></div>
             <div class="thread-text" id="modalContent"></div>
         </div>
         
-        <h4 style="color: var(--vino); margin-bottom: 1rem;">Comentarios</h4>
+        <h4 style="color: var(--vino); font-size: 1.1rem; margin-bottom: 0.8rem; font-family: 'Playfair Display', serif;">Comentarios</h4>
         <div id="modalComments">
             <!-- Comentarios dinámicos -->
         </div>
 
         <form class="comment-box" id="newCommentForm">
             <input type="text" id="commentAuthor" placeholder="Tu nombre (opcional)" />
-            <textarea id="commentContent" placeholder="Escribe tu comentario..." rows="2" required></textarea>
-            <button type="submit">Comentar</button>
+            <textarea id="commentContent" placeholder="Escribe tu respuesta o experiencia..." rows="2" required></textarea>
+            <button type="submit">Enviar Comentario</button>
         </form>
     </div>
 </div>
 
 <!-- Modal No Hay Entrada -->
-<div id="noPostModal" class="modal-overlay">
-    <div class="modal-content" style="max-width: 400px; text-align: center; border-radius: 24px; padding: 3rem 2rem;">
-        <span class="close-modal" onclick="closeNoPostModal()">&times;</span>
+<div id="noPostModal" class="modal-overlay" onclick="if(event.target === this) closeNoPostModal()">
+    <div class="modal-content" style="max-width: 400px; text-align: center; border-radius: 24px; padding: 2.5rem 1.5rem;">
         <div style="font-size: 3rem; margin-bottom: 1rem;">🌸</div>
-        <h3 style="color: var(--vino); font-family: 'Playfair Display', serif; margin-bottom: 1rem;">Sin entrada</h3>
-        <p style="color: #666; margin-bottom: 2rem;">Aún no se ha publicado una entrada de blog para este día. ¡Vuelve más tarde o explora otros días!</p>
-        <button onclick="closeNoPostModal()" style="background: var(--rosa-malva); color: white; border: none; padding: 0.8rem 2rem; border-radius: 100px; cursor: pointer; font-weight: 600;">Entendido</button>
+        <h3 style="color: var(--vino); font-family: 'Playfair Display', serif; margin-bottom: 0.8rem;">Sin entrada</h3>
+        <p style="color: #666; margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.5;">Aún no se ha publicado una entrada de blog para este día. ¡Vuelve más tarde o explora otros días!</p>
+        <button onclick="closeNoPostModal()" style="background: var(--rosa-malva); color: white; border: none; padding: 0.8rem 2.2rem; border-radius: 100px; cursor: pointer; font-weight: 600;">Entendido</button>
     </div>
 </div>
 
@@ -312,11 +428,13 @@
                 display.style.display = 'none';
                 document.getElementById('noPostModal').style.display = 'flex';
                 setTimeout(() => document.getElementById('noPostModal').classList.add('active'), 10);
+                if(typeof lenis !== 'undefined') lenis.stop();
             }
         } catch(e) { 
             console.error(e); 
             document.getElementById('noPostModal').style.display = 'flex';
             setTimeout(() => document.getElementById('noPostModal').classList.add('active'), 10);
+            if(typeof lenis !== 'undefined') lenis.stop();
         }
     }
 
@@ -324,6 +442,7 @@
         const mod = document.getElementById('noPostModal');
         mod.classList.remove('active');
         setTimeout(() => mod.style.display = 'none', 300);
+        if(typeof lenis !== 'undefined') lenis.start();
     }
 
     /* ──── FORUM LOGIC ──── */
@@ -414,6 +533,7 @@
                 document.getElementById('modalComments').innerHTML = commentsHtml || '<p style="color:#a08496; font-size:0.9rem;">No hay comentarios aún. Sé el primero.</p>';
                 
                 document.getElementById('forumModal').classList.add('active');
+                if(typeof lenis !== 'undefined') lenis.stop();
             }
         } catch(e) { console.error(e); }
     }
@@ -421,6 +541,7 @@
     function closeForumModal() {
         document.getElementById('forumModal').classList.remove('active');
         currentThreadId = null;
+        if(typeof lenis !== 'undefined') lenis.start();
     }
 
     document.getElementById('newCommentForm').addEventListener('submit', async (e) => {

@@ -138,11 +138,18 @@ app.delete('/api/blog/:id', async (req, res) => {
 });
 
 // --- Rutas del Foro ---
+const anonymousNames = [
+  "Gatito Anónimo", "Mamá Osa", "Estrellita Fugaz", 
+  "Mariposa Nocturna", "Flor Silvestre", "Conejito Tierno", 
+  "Panda Curioso", "Pajarito Cantador", "Luna Nueva", "Sol de Mañana"
+];
+const getRandomAnonymousName = () => anonymousNames[Math.floor(Math.random() * anonymousNames.length)];
+
 app.post('/api/forum', async (req, res) => {
   try {
     const { author, content } = req.body;
     const post = new ForumPost({
-      author: author || 'Gatito Anónimo',
+      author: author || getRandomAnonymousName(),
       content
     });
     await post.save();
@@ -183,7 +190,7 @@ app.post('/api/forum/:id/comments', async (req, res) => {
     if (!post) return res.status(404).json({ success: false, error: 'Post no encontrado' });
     
     post.comments.push({
-      author: author || 'Gatito Anónimo',
+      author: author || getRandomAnonymousName(),
       content
     });
     await post.save();
