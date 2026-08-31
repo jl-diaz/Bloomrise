@@ -77,6 +77,7 @@
             justify-content: center; 
             padding: 1rem;
             box-sizing: border-box;
+            overscroll-behavior: contain;
         }
         .modal-overlay.active { display: flex; }
         .modal-content { 
@@ -91,12 +92,21 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
             box-sizing: border-box;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
         }
         .modal-header-bar {
+            position: sticky;
+            top: -1.5rem;
+            background: #fdf7f9;
+            z-index: 10;
+            padding-top: 0.25rem;
+            padding-bottom: 0.8rem;
+            margin-top: -0.25rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #f3d7e3;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.25rem;
         }
         .modal-header-title {
             font-family: 'Playfair Display', serif;
@@ -125,6 +135,22 @@
             background: var(--rosa-emp);
             color: var(--vino);
             transform: scale(1.05);
+        }
+        
+        #blogModalContent {
+            line-height: 1.8;
+            color: #4a3a43;
+            font-size: 1rem;
+            word-break: break-word;
+        }
+        #blogModalContent p {
+            margin-bottom: 1.2rem;
+        }
+        #blogModalContent img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 1rem 0;
         }
         
         .thread-main-post { 
@@ -330,7 +356,7 @@
 <div class="modal-overlay" id="blogModal" onclick="if(event.target === this) closeBlogModal()">
     <div class="modal-content" data-lenis-prevent>
         <div class="modal-header-bar">
-            <h3 class="modal-header-title" id="blogModalDate">Entrada del Blog</h3>
+            <h3 class="modal-header-title" id="blogModalDate">Blog</h3>
             <button class="close-modal-btn" onclick="closeBlogModal()" title="Cerrar">✕</button>
         </div>
         <div class="thread-main-post" style="box-shadow: none; border: none; padding: 0.5rem 0 0 0;">
@@ -419,6 +445,19 @@
         renderCalendar();
     }
 
+    /* ──── SCROLL LOCKING HELPERS ──── */
+    function lockScroll() {
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        if(typeof lenis !== 'undefined') lenis.stop();
+    }
+
+    function unlockScroll() {
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        if(typeof lenis !== 'undefined') lenis.start();
+    }
+
     async function selectDate(dateStr, element) {
         document.querySelectorAll('.cal-date').forEach(el => el.classList.remove('active'));
         element.classList.add('active');
@@ -428,21 +467,21 @@
             const data = await res.json();
             
             if(data.success && data.data) {
-                document.getElementById('blogModalDate').innerText = `Entrada del ${dateStr}`;
+                document.getElementById('blogModalDate').innerText = `Blog del ${dateStr}`;
                 document.getElementById('blogModalContent').innerHTML = data.data.content;
                 document.getElementById('blogModal').style.display = 'flex';
                 setTimeout(() => document.getElementById('blogModal').classList.add('active'), 10);
-                if(typeof lenis !== 'undefined') lenis.stop();
+                lockScroll();
             } else {
                 document.getElementById('noPostModal').style.display = 'flex';
                 setTimeout(() => document.getElementById('noPostModal').classList.add('active'), 10);
-                if(typeof lenis !== 'undefined') lenis.stop();
+                lockScroll();
             }
         } catch(e) { 
             console.error(e); 
             document.getElementById('noPostModal').style.display = 'flex';
             setTimeout(() => document.getElementById('noPostModal').classList.add('active'), 10);
-            if(typeof lenis !== 'undefined') lenis.stop();
+            lockScroll();
         }
     }
 
@@ -450,14 +489,14 @@
         const mod = document.getElementById('blogModal');
         mod.classList.remove('active');
         setTimeout(() => mod.style.display = 'none', 300);
-        if(typeof lenis !== 'undefined') lenis.start();
+        unlockScroll();
     }
 
     function closeNoPostModal() {
         const mod = document.getElementById('noPostModal');
         mod.classList.remove('active');
         setTimeout(() => mod.style.display = 'none', 300);
-        if(typeof lenis !== 'undefined') lenis.start();
+        unlockScroll();
     }
 
     /* ──── FORUM LOGIC ──── */
@@ -548,7 +587,7 @@
                 document.getElementById('modalComments').innerHTML = commentsHtml || '<p style="color:#a08496; font-size:0.9rem;">No hay comentarios aún. Sé el primero.</p>';
                 
                 document.getElementById('forumModal').classList.add('active');
-                if(typeof lenis !== 'undefined') lenis.stop();
+                lockScroll();
             }
         } catch(e) { console.error(e); }
     }
@@ -556,7 +595,7 @@
     function closeForumModal() {
         document.getElementById('forumModal').classList.remove('active');
         currentThreadId = null;
-        if(typeof lenis !== 'undefined') lenis.start();
+        unlockScroll();
     }
 
     document.getElementById('newCommentForm').addEventListener('submit', async (e) => {
