@@ -37,9 +37,12 @@
     
     /* Blog Form */
     .blog-form { display: flex; flex-direction: column; gap: 1rem; }
-    .blog-form input, .blog-form textarea { padding: 1rem; border: 1px solid var(--rosa-emp); border-radius: 16px; outline: none; font-family: inherit; }
+    .blog-form input, .blog-form textarea { padding: 1rem; border: 1px solid var(--rosa-emp); border-radius: 16px; outline: none; font-family: inherit; font-size: 16px; }
     .blog-form textarea { min-height: 200px; resize: vertical; }
     .blog-form button { background: var(--rosa-malva); color: white; border: none; padding: 1rem 2rem; border-radius: 100px; cursor: pointer; font-weight: 600; align-self: flex-start; }
+
+    /* Inputs Base */
+    input, textarea, select { font-size: 16px !important; }
 
     /* Responsive */
     @media (max-width: 768px) {

@@ -226,35 +226,49 @@
     }
     .questions-form {
       display: flex;
+      flex-direction: column;
       gap: 1rem;
       margin-top: 1.5rem;
     }
     .questions-input {
-      flex: 1;
+      width: 100%;
       padding: 1rem 1.5rem;
       border: 1px solid var(--rosa-emp);
-      border-radius: 100px;
+      border-radius: 16px;
       outline: none;
       font-family: inherit;
+      font-size: 16px !important;
+      background: white;
+      box-sizing: border-box;
+    }
+    .questions-textarea {
+      resize: vertical;
+      min-height: 90px;
+      border-radius: 16px;
     }
     .questions-btn {
       background: var(--rosa-malva);
       color: white;
       border: none;
-      padding: 0 2rem;
+      padding: 0.9rem 2.5rem;
       border-radius: 100px;
       font-weight: 600;
+      font-size: 16px;
       cursor: pointer;
-      transition: opacity 0.3s;
+      transition: all 0.3s;
+      align-self: flex-start;
     }
-    .questions-btn:hover { opacity: 0.8; }
+    .questions-btn:hover { background: var(--vino); }
 
     @media (max-width: 768px) {
-      .page-header { grid-template-columns: 1fr; padding-top: 120px; }
+      .page-header { grid-template-columns: 1fr; padding-top: 120px; padding-left: 1.25rem; padding-right: 1.25rem; }
+      .info-container { padding: 0 1.25rem 3rem; }
+      .info-card-title { font-size: clamp(1.2rem, 5vw, 1.45rem); }
+      .info-card-header { gap: 0.75rem; align-items: center; }
+      .info-card-icon { width: 34px; height: 34px; font-size: 0.95rem; }
       .what-is-grid, .symptoms-grid { grid-template-columns: 1fr; }
       .how-factors-grid { grid-template-columns: 1fr 1fr; }
-      .questions-form { flex-direction: column; }
-      .questions-btn { padding: 1rem; width: 100%; }
+      .questions-btn { width: 100%; align-self: stretch; padding: 1rem; }
       .symptoms-svg { width: 220px; height: 220px; }
     }
     @media (max-width: 480px) {
@@ -355,7 +369,7 @@
         </div>
         <div class="factor-card">
           <div class="factor-icon">
-            <img src="./media/fisicosInformativa.png">
+            <img src="./media/Información/como4.png">
           </div>
           <div class="factor-title">Factores físicos</div>
           <div class="factor-desc">Cansancio extremo, falta de sueño y recuperación física del parto.</div>
@@ -410,12 +424,10 @@
       <p style="color:rgba(58,32,48,0.8); line-height: 1.6;">¿Tienes alguna pregunta sobre la depresión postparto?<br>
       ¿Te gustaría compartir tu experiencia o algún consejo que pueda ayudar a otras madres?<br>
       Puedes dejar tu mensaje aquí. Nuestro objetivo es crear un espacio seguro de información, apoyo y acompañamiento.</p>
-      <form class="questions-form" id="questionForm" style="flex-direction: column;">
+      <form class="questions-form" id="questionForm">
         <input type="email" id="emailInput" class="questions-input" placeholder="Tu correo electrónico" required />
-        <div style="display: flex; gap: 1rem; width: 100%;">
-          <input type="text" id="questionInput" class="questions-input" placeholder="Escribe tu mensaje aquí..." required />
-          <button type="submit" class="questions-btn">Enviar</button>
-        </div>
+        <textarea id="questionInput" class="questions-input questions-textarea" placeholder="Escribe tu mensaje o experiencia aquí..." rows="3" required></textarea>
+        <button type="submit" class="questions-btn">Enviar Mensaje</button>
         <p id="formFeedback" style="display: none; margin-top: 10px; font-weight: 600; color: var(--rosa-malva);"></p>
       </form>
     </div>

@@ -1,5 +1,8 @@
 /* ───────── RESET & BASE ───────── */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    /* Prevenir auto-zoom en iOS en campos de texto */
+    input, textarea, select { font-size: 16px !important; }
 
     :root {
       --rosa-claro:   #F5DDE8;
